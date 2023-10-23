@@ -2,21 +2,23 @@
   <q-layout view="lHh lpR fFf" class="main-layout">
     <q-header class="main-layout__header">
       <con-header-logo class="cursor-pointer" @click="gotoMain" />
-      <q-btn
-        dense
-        flat
-        icon="menu"
-        size="20px"
-        round
-        @click="toggleDrawer"
-      />
+      <div class="main-layout__user-data">
+        <user-data />
+        <!-- <q-btn
+                  dense
+                  flat
+                  icon="menu"
+                  size="20px"
+                  round
+                  @click="toggleDrawer"
+                /> -->
+      </div>
     </q-header>
 
     <!-- todo: настроить дравер как он должен выезжать (или сделать свой)
     <q-drawer v-model="drawerOpen" side="right">
        drawer content
-    </q-drawer>
-    -->
+    </q-drawer> -->
 
     <q-page-container class="main-layout__page-container">
       <router-view />
@@ -28,11 +30,12 @@
 import { defineComponent, ref } from 'vue';
 import ConHeaderLogo from 'components/ConHeaderLogo/ConHeaderLogo.vue';
 import { useRouter } from 'vue-router';
+import UserData from 'src/modules/users/components/UserData.vue';
 
 
 export default defineComponent({
   name: 'MainLayout',
-  components: { ConHeaderLogo },
+  components: { UserData, ConHeaderLogo },
 
   setup () {
     const router = useRouter();
@@ -88,7 +91,11 @@ $page-gap: 20px;
     padding: 20px 30px;
   }
 
-  &__header-logo {
+  &__user-data {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
   }
 
   &__page-container {
