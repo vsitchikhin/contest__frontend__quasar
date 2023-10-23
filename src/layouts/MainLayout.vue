@@ -20,7 +20,7 @@
        drawer content
     </q-drawer> -->
 
-    <q-page-container class="main-layout__page-container">
+    <q-page-container style="padding: 0" class="main-layout__page-container">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -91,6 +91,13 @@ $page-gap: 20px;
     padding: 20px 30px;
   }
 
+  &__page-container {
+    width: 95vw;
+    max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
+    border-radius: 20px;
+    overflow: auto;
+  }
+
   &__user-data {
     display: flex;
     gap: 20px;
@@ -98,11 +105,6 @@ $page-gap: 20px;
     align-items: center;
   }
 
-  &__page-container {
-    width: 95vw;
-    height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
-    border-radius: 20px;
-    @include background-blur-opacity($secondary-bg, 0.1, 20);
-  }
+
 }
 </style>

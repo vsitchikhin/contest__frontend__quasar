@@ -1,9 +1,9 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-<!--    <div class="container-test">-->
-<!--      <h1>test container</h1>-->
-<!--      <div class="wrapper-test">test wrapper</div>-->
-<!--    </div>-->
+  <q-page class="main-page row items-center justify-evenly q-pt-none">
+    <div class="">
+      <h1>test container</h1>
+      <div class="wrapper-test">test wrapper</div>
+    </div>
   </q-page>
 </template>
 
@@ -21,6 +21,13 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import 'src/css/app';
+
+.main-page {
+  width: 95vw;
+  max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
+  border-radius: 20px;
+  @include background-blur-opacity($secondary-bg, 0.1, 20);
+}
 
 /*.container-test {
   position: relative;
