@@ -1,9 +1,9 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <div class="container-test">
-      <h1>test container</h1>
-      <div class="wrapper-test">test wrapper</div>
-    </div>
+<!--    <div class="container-test">-->
+<!--      <h1>test container</h1>-->
+<!--      <div class="wrapper-test">test wrapper</div>-->
+<!--    </div>-->
   </q-page>
 </template>
 
@@ -22,7 +22,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import 'src/css/app';
 
-.container-test {
+/*.container-test {
   position: relative;
   background-color: $main;
   display: flex;
@@ -46,5 +46,5 @@ export default defineComponent({
   position: absolute;
   top: calc(50% - 100px);
   left: 10vw;
-}
+}*/
 </style>

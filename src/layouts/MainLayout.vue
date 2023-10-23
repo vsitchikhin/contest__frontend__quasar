@@ -1,39 +1,10 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+  <q-layout view="lHh Lpr lFf" class="main-layout">
+    <header class="main-layout__header">
+<!--      <layout-header />-->
+    </header>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-      </q-list>
-    </q-drawer>
-
-    <q-page-container>
+    <q-page-container class="main-layout__page-container">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -58,3 +29,33 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped lang="scss">
+@import 'src/css/app';
+
+.main-layout {
+  background-color: $main;
+  background-image: url('assets/static/Logo.png');
+  background-size: 80vw;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 0;
+
+  &__header {
+    width: 95vw;
+    height: 84px;
+    border-radius: 20px;
+    @include background-blur-opacity($secondary-bg, 0.1, 20);
+  }
+
+  &__page-container {
+    width: 95vw;
+    border-radius: 20px;
+    @include background-blur-opacity($secondary-bg, 0.1, 20);
+  }
+}
+</style>
