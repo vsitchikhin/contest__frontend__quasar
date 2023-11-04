@@ -2,9 +2,9 @@
   <q-layout view="lHh lpR fFf" class="main-layout">
     <q-header class="main-layout__header">
       <con-header-logo class="cursor-pointer" @click="gotoMain" />
-      <div class="main-layout__user-data">
-        <user-data />
-        <!-- <q-btn
+      <!--      <div class="main-layout__user-data">-->
+      <user-data />
+      <!-- <q-btn
                   dense
                   flat
                   icon="menu"
@@ -12,7 +12,7 @@
                   round
                   @click="toggleDrawer"
                 /> -->
-      </div>
+      <!--      </div>-->
     </q-header>
 
     <!-- todo: настроить дравер как он должен выезжать (или сделать свой)
@@ -71,7 +71,8 @@ $page-gap: 20px;
 .main-layout {
   background-color: $main;
   background-image: url('assets/static/Logo.png');
-  background-size: 80vw;
+  // todo: доработать для адаптивов
+  background-size: 65vw;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
@@ -83,6 +84,9 @@ $page-gap: 20px;
   &__header {
     display: flex;
     position: unset;
+    //top: 20px;
+    //left: 50%;
+    //transform: translateX(-50%);
     width: 95vw;
     height: 84px;
     border-radius: 20px;
@@ -93,9 +97,9 @@ $page-gap: 20px;
 
   &__page-container {
     width: 95vw;
-    max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
+    //max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
     border-radius: 20px;
-    overflow: auto;
+    min-height: unset;
   }
 
   &__user-data {
