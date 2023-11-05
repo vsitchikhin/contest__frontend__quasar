@@ -2,7 +2,6 @@
   <q-layout view="lHh lpR fFf" class="main-layout">
     <q-header class="main-layout__header">
       <con-header-logo class="cursor-pointer" @click="gotoMain" />
-      <!--      <div class="main-layout__user-data">-->
       <user-data />
       <!-- <q-btn
                   dense
