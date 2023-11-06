@@ -1,43 +1,56 @@
 <template>
   <q-layout view="lHh lpR fFf" class="main-layout">
-    <q-header class="main-layout__header">
-      <con-header-logo class="cursor-pointer" @click="gotoMain" />
-      <user-data />
-      <!-- <q-btn
-                  dense
-                  flat
-                  icon="menu"
-                  size="20px"
-                  round
-                  @click="toggleDrawer"
-                /> -->
-      <!--      </div>-->
-    </q-header>
+    <template v-if="showPage">
+      <q-header class="main-layout__header">
+        <con-header-logo class="cursor-pointer" @click="gotoMain" />
+        <user-data />
+        <!-- <q-btn
+                    dense
+                    flat
+                    icon="menu"
+                    size="20px"
+                    round
+                    @click="toggleDrawer"
+                  /> -->
+        <!--      </div>-->
+      </q-header>
 
-    <!-- todo: настроить дравер как он должен выезжать (или сделать свой)
-    <q-drawer v-model="drawerOpen" side="right">
-       drawer content
-    </q-drawer> -->
+      <!-- todo: настроить дравер как он должен выезжать (или сделать свой)
+      <q-drawer v-model="drawerOpen" side="right">
+         drawer content
+      </q-drawer> -->
 
-    <q-page-container style="padding: 0" class="main-layout__page-container">
-      <router-view />
-    </q-page-container>
+      <q-page-container style="padding: 0" class="main-layout__page-container">
+        <router-view />
+      </q-page-container>
+    </template>
+    <template v-else>
+      <con-full-page-loading />
+    </template>
   </q-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import ConHeaderLogo from 'components/ConHeaderLogo/ConHeaderLogo.vue';
 import { useRouter } from 'vue-router';
 import UserData from 'src/modules/users/components/UserData.vue';
+import { TokenService } from 'src/modules/core/services/tokens/token.service';
+import { UsersService } from 'src/modules/users/services/users.service';
+import ConFullPageLoading from 'components/ConFullPageLoading/ConFullPageLoading.vue';
 
 
 export default defineComponent({
   name: 'MainLayout',
-  components: { UserData, ConHeaderLogo },
+  components: {
+    ConFullPageLoading,
+    UserData,
+    ConHeaderLogo,
+  },
 
   setup () {
     const router = useRouter();
+    const tokenService = new TokenService();
 
     function gotoMain() {
       router.push('/');
@@ -56,9 +69,26 @@ export default defineComponent({
 
       toggleDrawer,
       gotoMain,
+
+      ...useUserData(tokenService),
     };
   },
 });
+
+function useUserData(tokenService: TokenService) {
+  const usersService = new UsersService();
+  const userDataLoaded = ref(false);
+
+  if (!usersService.currentUser) {
+    usersService.loadCurrentUser().then(() => (userDataLoaded.value = true));
+  }
+
+  const showPage = computed(() => !!tokenService.accessToken && userDataLoaded.value);
+
+  return {
+    showPage,
+  };
+}
 </script>
 
 <style scoped lang="scss">

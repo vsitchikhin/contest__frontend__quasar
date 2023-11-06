@@ -21,11 +21,13 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
+import { UsersService } from 'src/modules/users/services/users.service';
 export default defineComponent({
   setup() {
-    // todo: переписать под сервис
+    const usersService = new UsersService();
+
     const userAvatar = computed(() => false);
-    const userName = computed(() => 'Иван Петров');
+    const userName = computed(() => `${usersService.currentUser?.last_name} ${usersService.currentUser?.name}`);
 
     return {
       userAvatar,

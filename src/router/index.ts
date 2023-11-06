@@ -5,8 +5,9 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router';
-
+import { TokenService } from 'src/modules/core/services/tokens/token.service';
 import routes from './routes';
+import { UsersService } from 'src/modules/users/services/users.service';
 
 /*
  * If not building with SSR mode, you can
@@ -19,7 +20,6 @@ import routes from './routes';
 
 const notRequiredAuthenticationRoutes = ['/auth/signing', '/auth/signup'];
 
-// todo: доделать перенаправление со "/" и при отсутствии авторизации
 export default route(function ( /* { store, ssrContext } */ ) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
@@ -47,14 +47,19 @@ export default route(function ( /* { store, ssrContext } */ ) {
   });
 
   Router.beforeEach((to, from, next) => {
-    // const tokenService = new TokenService();
-    // todo: Обработка более полноценная: если пользователь админ - переброс на админа, если пользователь студент - переброс на студента
-    if (to.path === '/') {
+    const tokenService = new TokenService();
+    const usersService = new UsersService();
+
+    if (!notRequiredAuthenticationRoutes.includes(to.path) && !tokenService.accessToken) {
+      next({ name: 'Signing' });
+    } else if (to.path === '/' && !!tokenService.accessToken) {
+      const user = usersService.currentUser;
+      console.log(user);
+      // todo: Обработка более полноценная: если пользователь админ - переброс на админа, если пользователь студент - переброс на студента
+
       next({ name: 'Courses' });
     }
-    // if (!notRequiredAuthenticationRoutes.includes(to.path) && !tokenService.accessToken) next({ name: 'Login' });
-    // else if (to.name === 'Login' && tokenService.accessToken) next(from);
-    // else next();
+    else next();
   });
 
   return Router;
