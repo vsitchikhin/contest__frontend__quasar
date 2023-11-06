@@ -48,7 +48,10 @@ export default route(function ( /* { store, ssrContext } */ ) {
 
   Router.beforeEach((to, from, next) => {
     // const tokenService = new TokenService();
-
+    // todo: Обработка более полноценная: если пользователь админ - переброс на админа, если пользователь студент - переброс на студента
+    if (to.path === '/') {
+      next({ name: 'Courses' });
+    }
     // if (!notRequiredAuthenticationRoutes.includes(to.path) && !tokenService.accessToken) next({ name: 'Login' });
     // else if (to.name === 'Login' && tokenService.accessToken) next(from);
     // else next();
