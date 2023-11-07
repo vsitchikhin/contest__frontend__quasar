@@ -23,7 +23,7 @@ export default defineComponent({
   background-color: $main;
   background-image: url('assets/static/Logo.png');
   // todo: доработать для адаптивов
-  background-size: 65vw;
+  background-size: 60vw;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
