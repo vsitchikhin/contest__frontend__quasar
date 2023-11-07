@@ -1,6 +1,6 @@
 <template>
-  <div class="page-class">
-    page
+  <div class="page-class items-center">
+    <h2 class="text-h2 text-primary">РЕГИСТРАЦИЯЯЯЯЯЯ</h2>
   </div>
 </template>
 
