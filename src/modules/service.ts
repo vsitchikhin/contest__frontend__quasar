@@ -3,7 +3,7 @@
 
 export class Service {
   protected apiHeaders: { [key: string]: string };
-  // protected basePath = useRuntimeConfig().public.API_HOST;
+  protected basePath = process.env.API_HOST;
   // protected api: IHttpProvider = <IHttpProvider>useNuxtApp().$axios;
 
   public constructor() {

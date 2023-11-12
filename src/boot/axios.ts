@@ -4,7 +4,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 const api: AxiosInstance = axios.create({
   withCredentials: true,
-  baseURL: process.env.AUTH_SERVICE_HOST,
+  baseURL: process.env.API_HOST,
 });
 api.interceptors.response.use(
   (response) => {

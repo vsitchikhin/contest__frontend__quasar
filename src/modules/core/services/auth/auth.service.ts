@@ -48,6 +48,7 @@ export class AuthService extends Service {
   // API запросы
   public async authUser(email: string, password: string) {
     try {
+      console.info('base path - ', this.basePath);
       const response = await api.post<
       { email: string; password: string },
       { token: string }
