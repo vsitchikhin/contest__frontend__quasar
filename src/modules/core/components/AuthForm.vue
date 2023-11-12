@@ -1,29 +1,29 @@
 <template>
   <div class="form">
     <div class="form__inputs-container flex column">
-      <div class="form__input-container flex items-center">
+      <div class="form__input-container flex">
         <span class="text-white text-body1 text-bold form__label">Email</span>
-        <div class="form__input-delimiter" />
-        <q-input
-          v-model="login"
-          flat
-          color="secondary"
-          type="email"
-          dark
-          class="no-shadow text-white form__input q-px-lg"
-        />
+        <!--        <q-input-->
+        <!--          v-model="login"-->
+        <!--          flat-->
+        <!--          color="secondary"-->
+        <!--          type="email"-->
+        <!--          dark-->
+        <!--          class="no-shadow text-white form__input q-px-lg"-->
+        <!--        />-->
+        <input v-model="login" type="email" class="no-shadow text-white form__input q-px-lg">
       </div>
-      <div class="form__input-container flex items-center">
+      <div class="form__input-container flex">
         <span class="text-white text-body1 text-bold form__label">Пароль</span>
-        <div class="form__input-delimiter" />
-        <q-input
-          v-model="password"
-          flat
-          color="secondary"
-          type="password"
-          dark
-          class="no-shadow text-white form__input q-px-lg"
-        />
+        <!--        <q-input-->
+        <!--          v-model="password"-->
+        <!--          flat-->
+        <!--          color="secondary"-->
+        <!--          type="password"-->
+        <!--          dark-->
+        <!--          class="no-shadow text-white form__input q-px-lg outline-none"-->
+        <!--        />-->
+        <input v-model="password" type="password" class="no-shadow text-white form__input q-px-lg">
       </div>
     </div>
 
@@ -80,15 +80,19 @@ export default defineComponent({
   width: 600px;
 
   &__input {
-    padding: 0 8px;
+    padding: 20px 20px;
+    background: none;
+    outline: none;
+    border: none;
   }
 
   &__input-container {
     padding: 0 40px;
     @include background-blur-opacity($secondary-bg, 0.2, 20);
-    border-radius: 20px;
+    border-radius: 10px;
     justify-content: space-between;
     width: 400px;
+    align-items: center;
 
   }
 
@@ -98,12 +102,6 @@ export default defineComponent({
 
   &__label {
     width: 60px;
-  }
-
-  &__input-delimiter {
-    width: 1px;
-    height: 25px;
-    border-right: 2px solid $secondary-bg;
   }
 
   &__button {
