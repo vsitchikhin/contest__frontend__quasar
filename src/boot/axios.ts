@@ -2,7 +2,10 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
-const api: AxiosInstance = axios.create({ baseURL: process.env.AUTH_SERVICE_HOST });
+const api: AxiosInstance = axios.create({
+  withCredentials: true,
+  baseURL: process.env.AUTH_SERVICE_HOST,
+});
 api.interceptors.response.use(
   (response) => {
     return response;

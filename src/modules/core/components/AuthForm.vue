@@ -5,6 +5,7 @@
         <span class="text-white text-body1 text-bold form__label">Email</span>
         <div class="form__input-delimiter" />
         <q-input
+          v-model="login"
           flat
           color="secondary"
           type="email"
@@ -16,6 +17,7 @@
         <span class="text-white text-body1 text-bold form__label">Пароль</span>
         <div class="form__input-delimiter" />
         <q-input
+          v-model="password"
           flat
           color="secondary"
           type="password"
@@ -28,6 +30,7 @@
     <q-btn
       unelevated
       class="bg-secondary text-h6 text-weight-regular text-white form__button q-btn--no-uppercase"
+      @click="signing"
     >
       Войти
     </q-btn>
@@ -35,11 +38,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import { AuthService } from 'src/modules/core/services/auth/auth.service';
 
 export default defineComponent({
   setup() {
-    return {};
+    const authService = new AuthService();
+
+    const login = ref<string | null>(null);
+    const password = ref<string | null>(null);
+
+    async function signing() {
+      if (login.value && password.value) {
+        await authService.authUser(login.value, password.value);
+        return;
+      }
+      // todo: добавить валидацию
+    }
+
+    return {
+      login,
+      password,
+
+      signing,
+    };
   },
 });
 
