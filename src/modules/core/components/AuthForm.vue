@@ -3,26 +3,10 @@
     <div class="form__inputs-container flex column">
       <div class="form__input-container flex">
         <span class="text-white text-body1 text-bold form__label">Email</span>
-        <!--        <q-input-->
-        <!--          v-model="login"-->
-        <!--          flat-->
-        <!--          color="secondary"-->
-        <!--          type="email"-->
-        <!--          dark-->
-        <!--          class="no-shadow text-white form__input q-px-lg"-->
-        <!--        />-->
         <input v-model="login" type="email" class="no-shadow text-white form__input q-px-lg">
       </div>
       <div class="form__input-container flex">
         <span class="text-white text-body1 text-bold form__label">Пароль</span>
-        <!--        <q-input-->
-        <!--          v-model="password"-->
-        <!--          flat-->
-        <!--          color="secondary"-->
-        <!--          type="password"-->
-        <!--          dark-->
-        <!--          class="no-shadow text-white form__input q-px-lg outline-none"-->
-        <!--        />-->
         <input v-model="password" type="password" class="no-shadow text-white form__input q-px-lg">
       </div>
     </div>
@@ -80,7 +64,7 @@ export default defineComponent({
   width: 600px;
 
   &__input {
-    padding: 20px 20px;
+    padding: 20px 12px;
     background: none;
     outline: none;
     border: none;
