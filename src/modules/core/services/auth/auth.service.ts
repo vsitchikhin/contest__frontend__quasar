@@ -4,7 +4,7 @@ import { SelectedUserDto, UserFullDto, UserShortDto } from 'src/modules/core/typ
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
 import { CHANGE_TOKEN_CUSTOM_EVENT } from 'src/types/general.consts';
 import { api } from 'boot/axios';
-import { readTokenFromCookie } from 'src/modules/core/utils/Token.utils';
+import { TokenService } from 'src/modules/core/services/tokens/token.service';
 
 export class AuthService extends Service {
   private store;
@@ -47,16 +47,19 @@ export class AuthService extends Service {
   // ------------------------------------------------------------------
   // API запросы
   public async authUser(email: string, password: string) {
+    const tokenService = new TokenService();
     try {
-      console.info('base path - ', this.basePath);
       const response = await api.post<
       { email: string; password: string },
-      { token: string }
+      { data: { token: string } }
       >('/api/login', { email, password });
+      this.updateTokenInBrowser(response?.data.token);
+      tokenService.setToken(response.data?.token || null);
 
-      this.updateTokenInBrowser(response.token);
       window.dispatchEvent(new CustomEvent(CHANGE_TOKEN_CUSTOM_EVENT));
-      await this.loadUser();
+      const isUserLoaded = await this.loadUser();
+
+      return isUserLoaded;
     } catch(e: any) {
       if (e.status === 401) {
         // todo: доработать
@@ -67,6 +70,7 @@ export class AuthService extends Service {
 
       // throw new Error(e);
       console.log('error');
+      return false;
     }
   }
 
@@ -79,12 +83,13 @@ export class AuthService extends Service {
     try {
       const response = await api.get<null, UserFullDto>('/api/user', {
         headers: {
-          Authorization: `Bearer ${readTokenFromCookie()}`,
+          ...this.apiHeaders,
         },
       });
 
 
       this.store.SET_USER_PAYLOAD(response);
+      return true;
     } catch(e: any) {
       if (e.status === 401) {
         // todo: доработать
@@ -93,6 +98,7 @@ export class AuthService extends Service {
 
       // throw new Error(e);
       console.log('error');
+      return false;
     }
   }
 

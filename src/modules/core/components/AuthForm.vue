@@ -24,9 +24,11 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { AuthService } from 'src/modules/core/services/auth/auth.service';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   setup() {
+    const router = useRouter();
     const authService = new AuthService();
 
     const login = ref<string | null>(null);
@@ -34,7 +36,13 @@ export default defineComponent({
 
     async function signing() {
       if (login.value && password.value) {
-        await authService.authUser(login.value, password.value);
+        const isLogin = await authService.authUser(login.value, password.value);
+        console.log('isLogin - ', isLogin);
+
+        if (isLogin) {
+          await router.push({ path: '/' });
+        }
+
         return;
       }
       // todo: добавить валидацию

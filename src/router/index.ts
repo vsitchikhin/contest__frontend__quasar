@@ -8,6 +8,7 @@ import {
 import { TokenService } from 'src/modules/core/services/tokens/token.service';
 import routes from './routes';
 import { UsersService } from 'src/modules/users/services/users.service';
+import { useCookie } from 'src/modules/core/utils/Cookie.utils';
 
 /*
  * If not building with SSR mode, you can
@@ -18,7 +19,7 @@ import { UsersService } from 'src/modules/users/services/users.service';
  * with the Router instance.
  */
 
-const notRequiredAuthenticationRoutes = ['/auth/signing', '/auth/signup'];
+const notRequiredAuthenticationRoutes = ['/auth/signing', '/auth/signup', '/auth', '/auth/signing/', '/auth/signup/', '/auth/'];
 
 export default route(function ( /* { store, ssrContext } */ ) {
   const createHistory = process.env.SERVER
@@ -50,12 +51,23 @@ export default route(function ( /* { store, ssrContext } */ ) {
     const tokenService = new TokenService();
     const usersService = new UsersService();
 
-    if (!notRequiredAuthenticationRoutes.includes(to.path) && !tokenService.accessToken) {
+    const isUserAuthenticated = !!tokenService.token || !!useCookie<string>('jwt').value;
+    const isMainOrAuthPath = notRequiredAuthenticationRoutes.includes(to.path) || to.path === '/';
+
+    if (!notRequiredAuthenticationRoutes.includes(to.path) && (!tokenService.token && !useCookie<string>('jwt').value)) {
       next({ name: 'Signing' });
-    } else if (to.path === '/' && !!tokenService.accessToken) {
+    } else if (isMainOrAuthPath && isUserAuthenticated) {
       const user = usersService.currentUser;
       console.log(user);
       // todo: Обработка более полноценная: если пользователь админ - переброс на админа, если пользователь студент - переброс на студента
+      if (!tokenService.token) {
+        tokenService.setToken(useCookie<string>('jwt').value || null);
+      }
+
+      if (!user) {
+        usersService.loadCurrentUser();
+        next({ name: 'Courses' });
+      }
 
       next({ name: 'Courses' });
     }

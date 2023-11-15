@@ -1,18 +1,19 @@
-// import {useRuntimeConfig, useNuxtApp} from "#app";
-// import {IHttpProvider} from "src/types/base.types";
+import { useCookie } from 'src/modules/core/utils/Cookie.utils';
 
 export class Service {
   protected apiHeaders: { [key: string]: string };
   protected basePath = process.env.API_HOST;
-  // protected api: IHttpProvider = <IHttpProvider>useNuxtApp().$axios;
 
   public constructor() {
     this.apiHeaders = {
-      Authorization: 'Bearer',
+      Authorization: `Bearer ${useCookie<string>('jwt').value || ''}`,
     };
   }
 
   protected updateTokenInBrowser(token: string) {
     window.document.cookie = `jwt=${token}`;
+    this.apiHeaders = {
+      Authorization: `Bearer ${token}`,
+    };
   }
 }
