@@ -20,7 +20,7 @@ export default defineComponent({
 @import 'src/css/app';
 
 .auth-layout {
-  background-color: $main;
+  background-color: $primary;
   background-image: url('assets/static/Logo.png');
   // todo: доработать для адаптивов
   background-size: 60vw;

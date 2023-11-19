@@ -62,7 +62,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import 'src/css/app';
 .form {
-  @include background-blur-opacity($secondary-bg, 0.1, 20);
+  @include background-blur-opacity($main-bg, 0.1, 20);
   padding: 30px 20px;
   border-radius: 20px;
   display: flex;
@@ -80,7 +80,7 @@ export default defineComponent({
 
   &__input-container {
     padding: 0 40px;
-    @include background-blur-opacity($secondary-bg, 0.2, 20);
+    @include background-blur-opacity($main-bg, 0.2);
     border-radius: 10px;
     justify-content: space-between;
     width: 400px;

@@ -2,7 +2,7 @@ import { coursesStore } from 'src/modules/courses/services/courses.store';
 import { Service } from 'src/modules/service';
 import { ICourseShortDto } from 'src/modules/courses/types/courses.types';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
-// import {ITokenPlugin} from "src/plugins/TokenPlugin";
+import { api } from 'boot/axios';
 
 export class CoursesService extends Service {
   private store;
@@ -41,18 +41,19 @@ export class CoursesService extends Service {
     });
 
     try {
-      // const data = await this.api.get<null, ICourseShortDto[]>(`${this.basePath}/api/courses`, null, {
-      //   headers: {
-      //     Authorization: `Bearer ${tokenPlugin.get()}`,
-      //   },
-      // });
+      const response = await api.get('/api/courses', {
+        headers: {
+          ...this.apiHeaders,
+        },
+      });
+      console.log(response);
 
       this.store.SET_COURSES_LOADING_STATUS({
         code: LoadingStatusCodesEnum.loaded,
         action: LoadingStatusActionsEnum.noAction,
       });
 
-      // this.store.SET_COURSES_PAYLOAD(data);
+      this.store.SET_COURSES_PAYLOAD(response.data);
 
       return true;
     } catch(e: any) {

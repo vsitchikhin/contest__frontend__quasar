@@ -26,7 +26,7 @@ export default defineComponent({
   height: 100vh;
   width: 95vw;
   border-radius: 20px;
-  @include background-blur-opacity($secondary-bg, 0.1, 20);
+  @include background-blur-opacity($main-bg, 0.1, 20);
 
   &__wrapper {
     overflow: scroll;

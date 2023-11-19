@@ -27,7 +27,7 @@ export default defineComponent({
     const usersService = new UsersService();
 
     const userAvatar = computed(() => false);
-    const userName = computed(() => `${usersService.currentUser?.last_name} ${usersService.currentUser?.name}`);
+    const userName = computed(() => `${usersService.currentUser?.last_name ?? ''} ${usersService.currentUser?.name}`);
 
     return {
       userAvatar,

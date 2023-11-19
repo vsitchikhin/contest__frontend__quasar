@@ -1,6 +1,6 @@
 <template>
-  <q-page class="row items-center justify-evenly t-contest-loading">
-    <h3 class="text-h3 text-dark">
+  <div class="row items-center justify-evenly t-contest-loading">
+    <h3 class="text-h3 text-white">
       Загрузка данных...
     </h3>
     <q-circular-progress
@@ -8,10 +8,10 @@
       size="180px"
       :thickness="1"
       color="primary"
-      track-color="blue-grey-8"
+      track-color="secondary"
       class="q-ma-md"
     />
-  </q-page>
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,14 +23,19 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import 'src/css/app';
+
 .t-contest-loading {
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: $blue-grey-1;
+  @include background-blur-opacity($primary, 0.5, 40);
 
   h3 {
     margin-top: -12%;

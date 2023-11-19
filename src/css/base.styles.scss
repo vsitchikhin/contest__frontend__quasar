@@ -1,0 +1,7 @@
+@import 'src/css/mixins/color.mixins';
+
+.page-container {
+  @include background-blur-opacity($main-bg, 0.1, 20);
+  border-radius: 20px;
+  height: calc(100vh - 164px); // хидер и отступы
+}

@@ -35,9 +35,10 @@ import { computed, defineComponent, ref } from 'vue';
 import ConHeaderLogo from 'components/ConHeaderLogo/ConHeaderLogo.vue';
 import { useRouter } from 'vue-router';
 import UserData from 'src/modules/users/components/UserData.vue';
-import { TokenService } from 'src/modules/core/services/tokens/token.service';
 import { UsersService } from 'src/modules/users/services/users.service';
 import ConFullPageLoading from 'components/ConFullPageLoading/ConFullPageLoading.vue';
+import { LoadingStatusCodesEnum } from 'src/types/base.types';
+import { useCookie } from 'src/modules/core/utils/Cookie.utils';
 
 
 export default defineComponent({
@@ -50,7 +51,6 @@ export default defineComponent({
 
   setup () {
     const router = useRouter();
-    const tokenService = new TokenService();
 
     function gotoMain() {
       router.push('/');
@@ -70,20 +70,21 @@ export default defineComponent({
       toggleDrawer,
       gotoMain,
 
-      ...useUserData(tokenService),
+      ...useUserData(),
     };
   },
 });
 
-function useUserData(tokenService: TokenService) {
+function useUserData() {
   const usersService = new UsersService();
-  const userDataLoaded = ref(false);
+  const userDataLoaded = computed(() => usersService.currentUserLoadingStatus.code === LoadingStatusCodesEnum.loaded);
 
   if (!usersService.currentUser) {
-    usersService.loadCurrentUser().then(() => (userDataLoaded.value = true));
+    usersService.loadCurrentUser();
   }
 
-  const showPage = computed(() => !!tokenService.accessToken && userDataLoaded.value);
+  const showPage = computed(() => !!useCookie<string>('jwt').value && userDataLoaded.value);
+  // const showPage = ref(false); // пока оставлю, для отладки компонента полноэкранной загрузки
 
   return {
     showPage,
@@ -98,7 +99,7 @@ $header-height: 84px;
 $page-gap: 20px;
 
 .main-layout {
-  background-color: $main;
+  background-color: $primary;
   background-image: url('assets/static/Logo.png');
   // todo: доработать для адаптивов
   background-size: 65vw;
@@ -109,6 +110,8 @@ $page-gap: 20px;
   align-items: center;
   gap: 20px;
   padding: 30px 0;
+  max-height: 100vh;
+  overflow: hidden;
 
   &__header {
     display: flex;
@@ -119,14 +122,14 @@ $page-gap: 20px;
     width: 95vw;
     height: 84px;
     border-radius: 20px;
-    @include background-blur-opacity($secondary-bg, 0.1, 20);
+    @include background-blur-opacity($main-bg, 0.1, 20);
     justify-content: space-between;
     padding: 20px 30px;
   }
 
   &__page-container {
     width: 95vw;
-    //max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
+    max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
     border-radius: 20px;
     min-height: unset;
   }
