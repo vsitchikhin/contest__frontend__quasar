@@ -38,13 +38,4 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import 'src/css/app';
-
-.page-class {
-  height: 100%;
-}
-
-.page-container {
-  gap: 20px;
-}
-
 </style>

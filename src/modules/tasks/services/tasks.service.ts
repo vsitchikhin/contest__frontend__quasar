@@ -1,8 +1,8 @@
 import { Service } from 'src/modules/service';
 import { tasksStore } from 'src/modules/tasks/services/tasks.store';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum } from 'src/types/base.types';
-import { ITaskDto, ITaskHistory, ITaskSolution } from 'src/modules/tasks/types/tasks.types';
-// import { ITokenPlugin } from 'src/plugins/TokenPlugin';
+import { ITaskSolution } from 'src/modules/tasks/types/tasks.types';
+import { api } from 'boot/axios';
 
 export class TasksService extends Service {
   private store;
@@ -41,20 +41,19 @@ export class TasksService extends Service {
   // ------------------------------------------------------------------
   // API запросы
   public async loadTaskList(courseId: string): Promise<boolean> {
-    // const tokenPlugin = <ITokenPlugin>useNuxtApp().$token;
     this.store.SET_TASK_LIST_LOADING_STATUS({
       code: LoadingStatusCodesEnum.notLoaded,
       action: LoadingStatusActionsEnum.loading,
     });
 
     try {
-      // const response = await this.api.get<null, ITaskDto[]>(`${this.basePath}/api/courses/${courseId}/tasks`, null, {
-      //   headers: {
-      //     Authorization: `Bearer ${tokenPlugin.get()}`,
-      //   },
-      // });
+      const response = await api.get(`/api/courses/${courseId}/tasks`, {
+        headers: {
+          ...this.apiHeaders,
+        },
+      });
 
-      // this.store.SET_TASK_LIST_PAYLOAD(response);
+      this.store.SET_TASK_LIST_PAYLOAD(response.data);
       this.store.SET_TASK_LIST_LOADING_STATUS({
         code: LoadingStatusCodesEnum.loaded,
         action: LoadingStatusActionsEnum.noAction,
@@ -74,20 +73,19 @@ export class TasksService extends Service {
   }
 
   public async loadTask(taskId: string): Promise<boolean> {
-    // const tokenPlugin = <ITokenPlugin>useNuxtApp().$token;
     this.store.SET_TASK_LOADING_STATUS({
       code: LoadingStatusCodesEnum.notLoaded,
       action: LoadingStatusActionsEnum.loading,
     });
 
     try {
-      // const response = await this.api.get<null, ITaskDto>(`${this.basePath}/api/tasks/${taskId}`, null, {
-      //   headers: {
-      //     Authorization: `Bearer ${tokenPlugin.get()}`,
-      //   },
-      // });
+      const response = await api.get(`/api/tasks/${taskId}`, {
+        headers: {
+          ...this.apiHeaders,
+        },
+      });
 
-      // this.store.SET_TASK_PAYLOAD(response);
+      this.store.SET_TASK_PAYLOAD(response.data);
       this.store.SET_TASK_LOADING_STATUS({
         code: LoadingStatusCodesEnum.loaded,
         action: LoadingStatusActionsEnum.noAction,
@@ -107,20 +105,19 @@ export class TasksService extends Service {
   }
 
   public async loadTaskHistory(taskId: string): Promise<boolean> {
-    // const tokenPlugin = <ITokenPlugin>useNuxtApp().$token;
     this.store.SET_HISTORY_LOADING_STATUS({
       code: LoadingStatusCodesEnum.notLoaded,
       action: LoadingStatusActionsEnum.loading,
     });
 
     try {
-      // const response = await this.api.get<null, ITaskHistory[]>(`${this.basePath}/api/history/${taskId}`, null, {
-      //   headers: {
-      //     Authorization: `Bearer ${tokenPlugin.get()}`,
-      //   },
-      // });
+      const response = await api.get(`/api/history/${taskId}`, {
+        headers: {
+          ...this.apiHeaders,
+        },
+      });
 
-      // this.store.SET_TASK_HISTORY_PAYLOAD(response);
+      this.store.SET_TASK_HISTORY_PAYLOAD(response.data);
       this.store.SET_HISTORY_LOADING_STATUS({
         code: LoadingStatusCodesEnum.loaded,
         action: LoadingStatusActionsEnum.noAction,
@@ -140,7 +137,6 @@ export class TasksService extends Service {
   }
 
   public async submitTask(solution: string): Promise<boolean> {
-    // const tokenPlugin = <ITokenPlugin>useNuxtApp().$token;
     const currentTask = this.task;
 
     if (!currentTask) {
@@ -148,20 +144,19 @@ export class TasksService extends Service {
     }
 
     try {
-      // await this.api.post(
-      //   `${this.basePath}/api/check`,
-      //   {
-      //     task_id: Number(currentTask.id),
-      //     code: solution,
-      //     problem: currentTask.problem,
-      //   } as ITaskSolution,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${tokenPlugin.get()}`,
-      //     },
-      //   });
+      await api.post(
+        '/api/check',
+        {
+          task_id: Number(currentTask.id),
+          code: solution,
+          problem: currentTask.problem,
+        } as ITaskSolution,
+        {
+          headers: {
+            ...this.apiHeaders,
+          },
+        });
 
-      await new Promise(resolve => resolve(true));
       return true;
     } catch(e: any) {
       return false;
