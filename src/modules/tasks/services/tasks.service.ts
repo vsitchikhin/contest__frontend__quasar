@@ -1,7 +1,7 @@
 import { Service } from 'src/modules/service';
 import { tasksStore } from 'src/modules/tasks/services/tasks.store';
-import { LoadingStatusActionsEnum, LoadingStatusCodesEnum } from 'src/types/base.types';
-import { ITaskSolution } from 'src/modules/tasks/types/tasks.types';
+import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
+import { ITaskDto, ITaskHistory, ITaskSolution } from 'src/modules/tasks/types/tasks.types';
 import { api } from 'boot/axios';
 
 export class TasksService extends Service {
@@ -14,27 +14,27 @@ export class TasksService extends Service {
 
   // ------------------------------------------------------------------
   // Геттеры
-  public get taskList() {
+  public get taskList(): ITaskDto[] | null {
     return this.store.taskList;
   }
 
-  public get task() {
+  public get task(): ITaskDto | null {
     return this.store.task;
   }
 
-  public get taskListLoadingStatus() {
+  public get taskListLoadingStatus(): TLoadingStatus {
     return this.store.taskListLoadingStatus;
   }
 
-  public get taskLoadingStatus() {
+  public get taskLoadingStatus(): TLoadingStatus {
     return this.store.taskLoadingStatus;
   }
 
-  public get history() {
+  public get history(): ITaskHistory[] | null {
     return this.store.history;
   }
 
-  public get historyLoadingStatus() {
+  public get historyLoadingStatus(): TLoadingStatus {
     return this.store.historyLoadingStatus;
   }
 
@@ -166,7 +166,7 @@ export class TasksService extends Service {
   // ------------------------------------------------------------------
   // Методы
   public setActiveTask(taskId: string) {
-    const activeTask = this.store.taskList?.find(task => task.id === taskId);
+    const activeTask = this.store.taskList?.find(task => task.id === parseInt(taskId));
 
     this.store.SET_TASK_PAYLOAD(activeTask || null);
   }

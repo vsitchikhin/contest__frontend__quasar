@@ -5,7 +5,7 @@ export enum TaskStatusesEnum {
 }
 
 export interface ITaskDto {
-  id: string;
+  id: number;
   course: string;
   number: number;
   description: string;
