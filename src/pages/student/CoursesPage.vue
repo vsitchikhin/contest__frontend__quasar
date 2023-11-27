@@ -1,6 +1,6 @@
 <template>
   <q-page class="page-class">
-    <div class="page-container flex column items-center q-pa-lg">
+    <div class="page-container flex column items-center">
       <course-card v-for="item in courses" :key="item.id" :course="item" />
 
       <q-inner-loading :showing="coursesLoaded" dark color="secondary" style="border-radius: 20px" />

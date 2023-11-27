@@ -1,6 +1,6 @@
 <template>
   <q-page class="page-class">
-    <div class="page-container flex column items-center q-pa-lg">
+    <div class="page-container flex column items-center">
       <task-card v-for="item in tasks" :key="item.id" :task="item" />
 
       <q-inner-loading :showing="!tasksLoaded" dark color="secondary" style="border-radius: 20px" />

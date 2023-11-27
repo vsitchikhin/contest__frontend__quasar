@@ -12,6 +12,7 @@
     </div>
 
     <q-btn
+      no-caps
       unelevated
       class="bg-secondary text-h6 text-weight-regular text-white form__button q-btn--no-uppercase"
       @click="signing"

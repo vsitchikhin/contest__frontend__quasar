@@ -1,5 +1,5 @@
 <template>
-  <q-card flat class="task-card row">
+  <q-card flat class="task-card row items-center">
     <div class="task-card__icon col-shrink" :class="iconWrapperClasses" style="border-radius: 50%">
       <q-icon :name="iconName" size="22px" class="task-card__task-icon" />
     </div>
@@ -7,7 +7,7 @@
       <span class="task-card__challenge-id text-h6 text-white">{{ task.id }}</span>
       <span class="task-card__challenge-description text-body-1 q-pl-lg">{{ task.description }}</span>
     </div>
-    <q-space class="col-2" />
+    <!--    <q-space class="col-1" />-->
     <div class="task-card__rate-icon col-grow row items-center">
       <q-icon name="signal_cellular_alt " size="16px" class="text-secondary col-shrink" />
       <span class="text-body1 text-white q-pl-sm">{{ task.rating }}</span>
@@ -84,7 +84,7 @@ export default defineComponent({
   border-radius: 10px;
   padding: 30px 70px 30px 30px;
   width: 100%;
-  @include background-blur-opacity($main-bg, 0.01);
+  @include background-blur-opacity($main-bg, 0.1);
 
   &__icon {
     width: 36px;

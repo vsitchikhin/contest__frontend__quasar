@@ -13,7 +13,7 @@
         rounded
         class="col-grow"
       />
-      <div class="course-card__progress-title coll-grow q-pl-sm">
+      <div class="course-card__progress-title coll-grow q-pl-lg">
         <span class="text-body1 text-secondary text-bold">{{ course.success_count }}</span>
         <span class="text-body1 text-white"> / {{ course.count }}</span>
       </div>
@@ -63,7 +63,7 @@ export default defineComponent({
   border-radius: 10px;
   padding: 30px 70px 30px 30px;
   width: 100%;
-  @include background-blur-opacity($main-bg, 0.01);
+  @include background-blur-opacity($main-bg, 0.1);
 
   &__button {
     top: 0;

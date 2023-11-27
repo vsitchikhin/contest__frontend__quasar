@@ -12,7 +12,6 @@
                     round
                     @click="toggleDrawer"
                   /> -->
-        <!--      </div>-->
       </q-header>
 
       <!-- todo: настроить дравер как он должен выезжать (или сделать свой)
@@ -94,9 +93,6 @@ function useUserData() {
 
 <style scoped lang="scss">
 @import 'src/css/app';
-$padding-x: 30px;
-$header-height: 84px;
-$page-gap: 20px;
 
 .main-layout {
   background-color: $primary;
@@ -129,7 +125,7 @@ $page-gap: 20px;
 
   &__page-container {
     width: 95vw;
-    max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
+    max-height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap});
     border-radius: 20px;
     min-height: unset;
   }
@@ -140,7 +136,5 @@ $page-gap: 20px;
     justify-content: center;
     align-items: center;
   }
-
-
 }
 </style>

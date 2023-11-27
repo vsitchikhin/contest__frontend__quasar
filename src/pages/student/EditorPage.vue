@@ -1,6 +1,11 @@
 <template>
-  <q-page class="page-class">
-    page
+  <q-page class="page-class editor">
+    <div class="page-content-container">
+      page
+    </div>
+    <div class="page-content-container">
+      content
+    </div>
   </q-page>
 </template>
 
@@ -15,5 +20,15 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import 'src/css/app';
 
+.editor {
+  color: $card-font
+}
+
+.page-class {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 </style>

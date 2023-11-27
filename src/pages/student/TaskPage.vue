@@ -1,11 +1,16 @@
 <template>
   <q-page class="page-class task">
-    <div class="page-content-container task__description q-pa-lg">
+    <div class="page-content-container task__description flex column justify-between">
       <div class="text-body1">{{ task?.description }}</div>
-      <div class="text-body1">Максимальный балл: {{ task?.max_score }}</div>
-      <q-btn class="text-white">Перейти к решению</q-btn>
+      <div class="text-body1 flex justify-between">
+        <span>Максимальный балл: {{ task?.max_score }}</span>
+        <span>Набранные баллы: {{ task?.score }}</span>
+      </div>
+      <div class="task__button">
+        <q-btn no-caps flat class="text-white bg-secondary" @click="gotoEditor">Перейти к решению</q-btn>
+      </div>
     </div>
-    <div class="page-content-container task__history q-pa-lg">
+    <div class="page-content-container task__history">
       history
     </div>
   </q-page>
@@ -45,16 +50,19 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import 'src/css/app';
+$description-height: 224px;
 
 .task {
   color: $card-font;
 
   &__description {
-
+    padding: 30px;
+    height: $description-height;
   }
 
   &__history {
-
+    padding: 30px;
+    height: calc(100vh - (#{$description-height} + #{$header-height} + #{$main-padding} * 2 + #{$page-gap} * 2));
   }
 }
 
