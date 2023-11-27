@@ -165,9 +165,23 @@ export class TasksService extends Service {
 
   // ------------------------------------------------------------------
   // Методы
-  public setActiveTask(taskId: string) {
+  public async setActiveTask(taskId: string) {
+    if (!this.store.taskList) {
+      return await this.loadTask(taskId);
+    }
+
     const activeTask = this.store.taskList?.find(task => task.id === parseInt(taskId));
 
-    this.store.SET_TASK_PAYLOAD(activeTask || null);
+    if (activeTask) {
+      this.store.SET_TASK_PAYLOAD(activeTask || null);
+      this.store.SET_TASK_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.loaded,
+        action: LoadingStatusActionsEnum.noAction,
+      });
+      return true;
+    } else {
+      // todo: Обработать вариант, если вдруг задача не найдена
+      return await this.loadTask(taskId);
+    }
   }
 }

@@ -13,6 +13,7 @@
     <div class="page-content-container task__history">
       history
     </div>
+    <con-full-page-loading v-show="isLoading" />
   </q-page>
 </template>
 
@@ -20,16 +21,18 @@
 import { computed, defineComponent } from 'vue';
 import { TasksService } from 'src/modules/tasks/services/tasks.service';
 import { useRoute, useRouter } from 'vue-router';
+import { LoadingStatusCodesEnum } from 'src/types/base.types';
+import ConFullPageLoading from 'components/ConFullPageLoading/ConFullPageLoading.vue';
 
 export default defineComponent({
+  components: { ConFullPageLoading },
   setup() {
     const tasksService = new TasksService();
     const route = useRoute();
     const router = useRouter();
 
     const taskId = computed(() => Array.isArray(route.params.taskId) ? route.params.taskId[0] : route.params.taskId);
-
-
+    const isLoading = computed(() => tasksService.taskLoadingStatus.code !== LoadingStatusCodesEnum.loaded);
 
     tasksService.setActiveTask(taskId.value);
 
@@ -41,6 +44,7 @@ export default defineComponent({
 
     return {
       task,
+      isLoading,
 
       gotoEditor,
     };
