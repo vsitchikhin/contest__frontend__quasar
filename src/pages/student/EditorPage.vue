@@ -2,6 +2,7 @@
   <q-page class="page-class editor">
     <div class="page-content-container">
       хуй тебе блять а не редактор кода долбоеб, пошел нахуй вообще, научиться он тут чему-то собрался, конч блять
+      <con-code-editor />
     </div>
     <div class="page-content-container">
       content
@@ -11,12 +12,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ConMonacoEditor from 'components/ConMonacoEditor/ConMonacoEditor.vue';
+import ConCodeEditor from 'components/ConCodeEditor/ConCodeEditor.vue';
 
 export default defineComponent({
-  components: { ConMonacoEditor },
-
-  setup() {
+  components: { ConCodeEditor },
+  setup () {
 
     return {};
   },

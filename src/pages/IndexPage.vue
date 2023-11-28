@@ -22,7 +22,7 @@ export default defineComponent({
 @import 'src/css/app';
 
 .main-page {
-  max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
+  max-height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap}); // высота экрана - высота хидера - паддинги - расстояние между блоками
   height: 100vh;
   width: 95vw;
   border-radius: 20px;
