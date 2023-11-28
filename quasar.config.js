@@ -9,6 +9,7 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 const { configure } = require('quasar/wrappers')
+const monacoEditorPlugin = require('vite-plugin-monaco-editor')
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -77,9 +78,25 @@ module.exports = configure(function (/* ctx */) {
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
-      // vitePlugins: [
-      //   [ 'package-name', { ..options.. } ]
-      // ]
+      vitePlugins: [
+        /*[
+          'monaco-editor',
+          new MonacoEditorPlugin({
+          languages: [
+            'javascript',
+            'css',
+            'html',
+            'typescript',
+            'python',
+            'c++',
+            'c',
+            'c#',
+          ]
+        }),
+        ]*/
+        monacoEditorPlugin,
+        // [ 'package-name', { ..options.. } ]
+      ],
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer

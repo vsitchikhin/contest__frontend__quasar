@@ -1,7 +1,7 @@
 <template>
   <q-page class="page-class editor">
     <div class="page-content-container">
-      page
+      хуй тебе блять а не редактор кода долбоеб, пошел нахуй вообще, научиться он тут чему-то собрался, конч блять
     </div>
     <div class="page-content-container">
       content
@@ -11,9 +11,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import ConMonacoEditor from 'components/ConMonacoEditor/ConMonacoEditor.vue';
 
 export default defineComponent({
+  components: { ConMonacoEditor },
+
   setup() {
+
     return {};
   },
 });
