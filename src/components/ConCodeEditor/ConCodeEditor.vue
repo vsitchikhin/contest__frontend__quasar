@@ -1,5 +1,5 @@
 <template>
-  <div ref="codeEditorElement" class="con-code-editor" style="height: 100px" />
+  <div ref="codeEditorElement" class="con-code-editor" />
 </template>
 
 <script lang="ts">
@@ -7,29 +7,33 @@ import { defineComponent, ref, watch } from 'vue';
 import { monaco } from 'src/plugins/CustomMonaco';
 
 export default defineComponent({
-  setup () {
-    const solution = ref('');
-    const codeEditorElement = ref<HTMLElement | null>(null);
+  props: {
+    modelValue: {
+      type: String,
+      required: true,
+    },
+  },
 
-    watch(solution, () => {
-      console.log(solution.value);
-    });
+  emits: {
+    'update:model-value': null,
+  },
+
+  setup (props, ctx) {
+    const codeEditorElement = ref<HTMLElement | null>(null);
 
     watch(codeEditorElement, () => {
       if (codeEditorElement.value) {
         monaco.editor.create(codeEditorElement.value, {
-          value: solution.value,
+          value: props.modelValue,
           language: 'python',
           theme: 'vs-dark',
-        }).onDidChangeModelContent(value => {
-          console.log(value);
-          console.log(monaco.editor.getEditors()[0].getValue());
+        }).onDidChangeModelContent(() => {
+          ctx.emit('update:model-value', monaco.editor.getEditors()[0].getValue());
         });
       }
     });
 
     return {
-      solution,
       codeEditorElement,
     };
   },
@@ -37,5 +41,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import 'src/css/app';
 
+.con-code-editor {
+  @include background-blur-opacity($main-bg, 0.1);
+
+  height: calc(100vh - #{$header-height} - #{$page-gap} * 4 - #{$main-padding} * 10)
+}
 </style>
