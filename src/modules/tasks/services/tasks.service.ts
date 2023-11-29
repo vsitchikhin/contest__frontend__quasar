@@ -137,6 +137,7 @@ export class TasksService extends Service {
   }
 
   public async submitTask(solution: string): Promise<boolean> {
+    debugger;
     const currentTask = this.task;
 
     if (!currentTask) {
@@ -147,7 +148,7 @@ export class TasksService extends Service {
       await api.post(
         '/api/check',
         {
-          task_id: Number(currentTask.id),
+          task_id: currentTask.id,
           code: solution,
           problem: currentTask.problem,
         } as ITaskSolution,

@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="page-content-container task__history">
-      history
+      <span class="text-h6 text-weight-regular task__history-title">История решений</span>
     </div>
     <con-full-page-loading v-show="isLoading" />
   </q-page>
@@ -33,10 +33,13 @@ export default defineComponent({
 
     const taskId = computed(() => Array.isArray(route.params.taskId) ? route.params.taskId[0] : route.params.taskId);
     const isLoading = computed(() => tasksService.taskLoadingStatus.code !== LoadingStatusCodesEnum.loaded);
+    const isHistoryLoading = computed(() => tasksService.historyLoadingStatus.code !== LoadingStatusCodesEnum.loaded);
 
     tasksService.setActiveTask(taskId.value);
+    tasksService.loadTaskHistory(taskId.value);
 
     const task = computed(() => tasksService.task);
+    const history = computed(() => tasksService.history);
 
     function gotoEditor() {
       router.push({ name: 'TaskEditor', params: { taskId: taskId.value } });
@@ -45,6 +48,9 @@ export default defineComponent({
     return {
       task,
       isLoading,
+
+      history,
+      isHistoryLoading,
 
       gotoEditor,
     };

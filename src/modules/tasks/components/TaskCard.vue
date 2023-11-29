@@ -1,8 +1,6 @@
 <template>
   <q-card flat class="task-card row items-center">
-    <div class="task-card__icon col-shrink" :class="iconWrapperClasses" style="border-radius: 50%">
-      <q-icon :name="iconName" size="22px" class="task-card__task-icon" />
-    </div>
+    <con-status-icon :status="task.status" />
     <div class="task-card__challenge col-grow row items-center q-pl-xl">
       <span class="task-card__challenge-id text-h6 text-white">{{ task.id }}</span>
       <span class="task-card__challenge-description text-body-1 q-pl-lg">{{ task.description }}</span>
@@ -27,11 +25,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
-import { ITaskDto, TaskStatusesEnum } from 'src/modules/tasks/types/tasks.types';
+import { defineComponent, PropType } from 'vue';
+import { ITaskDto } from 'src/modules/tasks/types/tasks.types';
 import { useRouter } from 'vue-router';
+import ConStatusIcon from 'components/ConStatusIcon/ConStatusIcon.vue';
 
 export default defineComponent({
+  components: { ConStatusIcon },
   props: {
     task: {
       type: Object as PropType<ITaskDto>,
@@ -42,35 +42,11 @@ export default defineComponent({
   setup(props) {
     const router = useRouter();
 
-
-    // ----------------------------------------------------------------
-    // Параметры отображения
-    const iconName = computed(() => {
-      switch (props.task.status) {
-        case TaskStatusesEnum.success: {
-          return 'done';
-        }
-        case TaskStatusesEnum.error: {
-          return 'close';
-        }
-        default: {
-          return '';
-        }
-      }
-    });
-
-    const iconWrapperClasses = computed<Record<string, boolean>>(() => ({
-      'task-card__icon--success': props.task.status === TaskStatusesEnum.success,
-    }));
-
     function gotoTask() {
       router.push({ name: 'Task', params: { taskId: props.task.id } });
     }
 
     return {
-      iconName,
-      iconWrapperClasses,
-
       gotoTask,
     };
   },
@@ -85,16 +61,6 @@ export default defineComponent({
   padding: 30px 70px 30px 30px;
   width: 100%;
   @include background-blur-opacity($main-bg, 0.1);
-
-  &__icon {
-    width: 36px;
-    height: 36px;
-    @include background-blur-opacity($main-bg, 0.1);
-
-    &--success {
-      background-color: $secondary;
-    }
-  }
 
   &__challenge-description {
     color: $card-font;
