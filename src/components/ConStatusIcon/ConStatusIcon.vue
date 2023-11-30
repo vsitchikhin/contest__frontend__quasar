@@ -51,9 +51,20 @@ export default defineComponent({
   width: 36px;
   height: 36px;
   @include background-blur-opacity($main-bg, 0.1);
+  color: $main-font;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 
   &--success {
     background-color: $secondary;
+    color: $card-font;
+  }
+
+  &__icon {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

@@ -12,6 +12,7 @@
     </div>
     <div class="page-content-container task__history">
       <span class="text-h6 text-weight-regular task__history-title">История решений</span>
+      <task-history />
     </div>
     <con-full-page-loading v-show="isLoading" />
   </q-page>
@@ -23,9 +24,10 @@ import { TasksService } from 'src/modules/tasks/services/tasks.service';
 import { useRoute, useRouter } from 'vue-router';
 import { LoadingStatusCodesEnum } from 'src/types/base.types';
 import ConFullPageLoading from 'components/ConFullPageLoading/ConFullPageLoading.vue';
+import TaskHistory from 'src/modules/tasks/components/TaskHistory.vue';
 
 export default defineComponent({
-  components: { ConFullPageLoading },
+  components: { TaskHistory, ConFullPageLoading },
   setup() {
     const tasksService = new TasksService();
     const route = useRoute();
@@ -73,6 +75,7 @@ $description-height: 224px;
   &__history {
     padding: 30px;
     height: calc(100vh - (#{$description-height} + #{$header-height} + #{$main-padding} * 2 + #{$page-gap} * 2));
+    border-radius: 10px;
   }
 }
 
