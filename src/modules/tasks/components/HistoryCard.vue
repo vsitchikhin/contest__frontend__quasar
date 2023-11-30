@@ -1,15 +1,15 @@
 <template>
-  <con-dropdown v-model="isDropdownOpen" class="history-card">
+  <con-dropdown v-model="isDropdownOpen" class="history-card" :class="cardClasses">
     <template #main>
-      <div class="history-card__card-container row items-center" :class="cardContainerClasses" @click="openDropdown">
+      <div class="history-card__card-container row items-center" @click="openDropdown">
         <con-status-icon class="col-shrink" :status="historyCard.status" />
-        <div class="history-card__description q-pl-lg col-auto">{{ historyTitle }}</div>
+        <div class="history-card__description q-pl-lg col-auto text-h6 text-weight-regular">{{ historyTitle }}</div>
         <q-space class="col-auto" />
-        <div class="history-card__score">
-          <span class="history-card__score-number">{{ historyCard.score }}</span>
+        <div class="history-card__score text-weight-medium text-body1">
+          <span class="text-secondary">{{ historyCard.score }}</span>
           баллов
         </div>
-        <q-icon :name="dropdownIcon" class="history-card__dropdown-icon" />
+        <q-icon :name="dropdownIcon" size="25px" class="history-card__dropdown-icon q-pl-md" />
       </div>
     </template>
     <template #opening>
@@ -54,11 +54,11 @@ export default defineComponent({
     });
 
     const isDropdownOpen = ref(false);
-    const dropdownIcon = computed(() => isDropdownOpen.value ? 'chevron_up' : 'chevron_down');
+    const dropdownIcon = computed(() => isDropdownOpen.value ? 'expand_less' : 'expand_more');
     const isCardDisabled = computed(() => !props.historyCard.tests.length);
 
-    const cardContainerClasses = computed(() => ({
-      'history-card__card-container--open': isDropdownOpen.value,
+    const cardClasses = computed(() => ({
+      'history-card--open': isDropdownOpen.value,
     }));
 
 
@@ -76,7 +76,7 @@ export default defineComponent({
       isDropdownOpen,
       isCardDisabled,
 
-      cardContainerClasses,
+      cardClasses,
 
       openDropdown,
     };
@@ -90,23 +90,17 @@ export default defineComponent({
 .history-card {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   border-radius: 10px;
+  @include background-blur-opacity($main-bg, 0.02);
+  //@include background-blur-opacity($primary, 0.3);
 
   &__card-container {
-    border-radius: 10px;
     display: flex;
     padding: 20px 30px;
-    @include background-blur-opacity($main-bg, 0.1);
-
-    &--open {
-      border-radius: 10px 10px 0 0;
-    }
   }
 
-  &__test-container {
-    border-radius: 0 0 10px 10px;
-    @include background-blur-opacity($main-bg, 0.1);
+  &__tests-container {
+    padding: 20px 30px;
   }
 
 }

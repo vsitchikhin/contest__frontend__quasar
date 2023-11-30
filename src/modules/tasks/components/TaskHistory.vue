@@ -25,5 +25,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-
+.task-history {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 </style>

@@ -1,16 +1,16 @@
 <template>
   <div class="tests-info">
     <div class="test-info__content-container">
-      <h3 class="test-info__header">
+      <h3 class="test-info__header text-h5 text-secondary text-weight-medium q-ma-none">
         Тест {{ testInfo.id }}
       </h3>
-      <div class="test-info__row">
-        <div class="test-info__title">Данные, которые подавали на вход:</div>
-        <div class="test-info__data">{{ testInfo.test_in }}</div>
+      <div class="row items-center">
+        <div class="test-info__title text-h6 text-weight-regular q-ma-none col-3">Данные, которые подавали на вход:</div>
+        <div class="test-info__data text-body1">{{ testInfo.test_in }}</div>
       </div>
-      <div class="test-info__row">
-        <div class="test-info__title">Неправильный вывод:</div>
-        <div class="test-info__data--secondary">{{ testInfo.test_out }}</div>
+      <div class="row items-center">
+        <div class="test-info__title text-h6 text-weight-regular q-ma-none col-3">Неправильный вывод:</div>
+        <div class="test-info__data text-body1 text-secondary text-weight-regular">{{ testInfo.test_out }}</div>
       </div>
     </div>
   </div>
@@ -34,7 +34,20 @@ export default defineComponent({
 @import 'src/css/app';
 
 .test-info {
-  @include background-blur-opacity($main-bg, 0.1);
-  border-radius: 0 0 10px 10px;
+  &__content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    @include background-blur-opacity($main-bg, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  &__data {
+    @include background-blur-opacity($primary, 0.5);
+    padding: 20px 30px;
+    border-radius: 10px;
+    max-width: 60%;
+  }
 }
 </style>

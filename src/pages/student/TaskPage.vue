@@ -73,9 +73,13 @@ $description-height: 224px;
   }
 
   &__history {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     padding: 30px;
     height: calc(100vh - (#{$description-height} + #{$header-height} + #{$main-padding} * 2 + #{$page-gap} * 2));
     border-radius: 10px;
+    overflow: auto;
   }
 }
 
