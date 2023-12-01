@@ -1,116 +1,140 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+  <q-layout view="lHh lpR fFf" class="main-layout">
+    <template v-if="showPage">
+      <q-header class="main-layout__header">
+        <con-header-logo class="cursor-pointer" @click="gotoMain" />
+        <user-data />
+        <!-- <q-btn
+                    dense
+                    flat
+                    icon="menu"
+                    size="20px"
+                    round
+                    @click="toggleDrawer"
+                  /> -->
+      </q-header>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+      <!-- todo: настроить дравер как он должен выезжать (или сделать свой)
+      <q-drawer v-model="drawerOpen" side="right">
+         drawer content
+      </q-drawer> -->
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+      <q-page-container style="padding: 0" class="main-layout__page-container">
+        <router-view />
+      </q-page-container>
+    </template>
+    <template v-else>
+      <con-full-page-loading />
+    </template>
   </q-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { computed, defineComponent, ref } from 'vue';
+import ConHeaderLogo from 'components/ConHeaderLogo/ConHeaderLogo.vue';
+import { useRouter } from 'vue-router';
+import UserData from 'src/modules/users/components/UserData.vue';
+import { UsersService } from 'src/modules/users/services/users.service';
+import ConFullPageLoading from 'components/ConFullPageLoading/ConFullPageLoading.vue';
+import { LoadingStatusCodesEnum } from 'src/types/base.types';
+import { useCookie } from 'src/modules/core/utils/Cookie.utils';
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
 
 export default defineComponent({
   name: 'MainLayout',
-
   components: {
-    EssentialLink
+    ConFullPageLoading,
+    UserData,
+    ConHeaderLogo,
   },
 
   setup () {
-    const leftDrawerOpen = ref(false)
+    const router = useRouter();
+
+    function gotoMain() {
+      router.push('/');
+    }
+
+    // -----------------------------------------------------------------
+    // Параметры отображения
+    const drawerOpen = ref(false);
+
+    function toggleDrawer() {
+      drawerOpen.value = !drawerOpen.value;
+    }
 
     return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
+      drawerOpen,
+
+      toggleDrawer,
+      gotoMain,
+
+      ...useUserData(),
+    };
+  },
+});
+
+function useUserData() {
+  const usersService = new UsersService();
+  const userDataLoaded = computed(() => usersService.currentUserLoadingStatus.code === LoadingStatusCodesEnum.loaded);
+
+  if (!usersService.currentUser) {
+    usersService.loadCurrentUser();
   }
-})
+
+  const showPage = computed(() => !!useCookie<string>('jwt').value && userDataLoaded.value);
+  // const showPage = ref(false); // пока оставлю, для отладки компонента полноэкранной загрузки
+
+  return {
+    showPage,
+  };
+}
 </script>
+
+<style scoped lang="scss">
+@import 'src/css/app';
+
+.main-layout {
+  background-color: $primary;
+  background-image: url('assets/static/Logo.png');
+  // todo: доработать для адаптивов
+  background-size: 65vw;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 0;
+  max-height: 100vh;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    position: unset;
+    //top: 20px;
+    //left: 50%;
+    //transform: translateX(-50%);
+    width: 95vw;
+    height: 84px;
+    border-radius: 20px;
+    @include background-blur-opacity($main-bg, 0.1, 20);
+    justify-content: space-between;
+    padding: 20px 30px;
+  }
+
+  &__page-container {
+    width: 95vw;
+    max-height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap});
+    border-radius: 20px;
+    min-height: unset;
+  }
+
+  &__user-data {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+</style>

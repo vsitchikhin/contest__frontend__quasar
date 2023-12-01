@@ -1,49 +1,36 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page style="min-height: 0" class="main-page row items-center justify-evenly q-pt-none">
+    <h1 class="text-h1 text-primary">
+      main page
+    </h1>
   </q-page>
 </template>
 
 <script lang="ts">
-import { Todo, Meta } from 'components/models'
-import ExampleComponent from 'components/ExampleComponent.vue'
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'IndexPage',
-  components: { ExampleComponent },
   setup () {
-    const todos = ref<Todo[]>([
-      {
-        id: 1,
-        content: 'ct1'
-      },
-      {
-        id: 2,
-        content: 'ct2'
-      },
-      {
-        id: 3,
-        content: 'ct3'
-      },
-      {
-        id: 4,
-        content: 'ct4'
-      },
-      {
-        id: 5,
-        content: 'ct5'
-      }
-    ])
-    const meta = ref<Meta>({
-      totalCount: 1200
-    })
-    return { todos, meta }
-  }
-})
+
+    return {  };
+  },
+});
 </script>
+
+<style scoped lang="scss">
+@import 'src/css/app';
+
+.main-page {
+  max-height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap}); // высота экрана - высота хидера - паддинги - расстояние между блоками
+  height: 100vh;
+  width: 95vw;
+  border-radius: 20px;
+  @include background-blur-opacity($main-bg, 0.1, 20);
+
+  &__wrapper {
+    overflow: scroll;
+    height: 80%;
+  }
+}
+</style>

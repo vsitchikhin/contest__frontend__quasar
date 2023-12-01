@@ -1,0 +1,19 @@
+@import 'src/css/mixins/color.mixins';
+
+.page-container {
+  @include background-blur-opacity($main-bg, 0.1, 20);
+  border-radius: 20px;
+  height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap});
+  gap: 20px;
+  padding: 30px;
+}
+
+.page-content-container {
+  @include background-blur-opacity($main-bg, 0.1, 20);
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.page-class {
+  height: 100%;
+}

@@ -1,0 +1,8 @@
+@mixin background-blur-opacity($color, $alpha: 0.6, $blur: 0) {
+  $red: red($color);
+  $green: green($color);
+  $blue: blue($color);
+
+  background-color: rgba($red, $green, $blue, $alpha);
+  backdrop-filter: blur(($blur) + px);
+}
