@@ -30,14 +30,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import ConHeaderLogo from 'components/ConHeaderLogo/ConHeaderLogo.vue';
 import { useRouter } from 'vue-router';
 import UserData from 'src/modules/users/components/UserData.vue';
-import { UsersService } from 'src/modules/users/services/users.service';
 import ConFullPageLoading from 'components/ConFullPageLoading/ConFullPageLoading.vue';
-import { LoadingStatusCodesEnum } from 'src/types/base.types';
-import { useCookie } from 'src/modules/core/utils/Cookie.utils';
+import { useUserData } from 'src/modules/core/composables/useUserData';
 
 
 export default defineComponent({
@@ -73,22 +71,6 @@ export default defineComponent({
     };
   },
 });
-
-function useUserData() {
-  const usersService = new UsersService();
-  const userDataLoaded = computed(() => usersService.currentUserLoadingStatus.code === LoadingStatusCodesEnum.loaded);
-
-  if (!usersService.currentUser) {
-    usersService.loadCurrentUser();
-  }
-
-  const showPage = computed(() => !!useCookie<string>('jwt').value && userDataLoaded.value);
-  // const showPage = ref(false); // пока оставлю, для отладки компонента полноэкранной загрузки
-
-  return {
-    showPage,
-  };
-}
 </script>
 
 <style scoped lang="scss">
@@ -112,9 +94,6 @@ function useUserData() {
   &__header {
     display: flex;
     position: unset;
-    //top: 20px;
-    //left: 50%;
-    //transform: translateX(-50%);
     width: 95vw;
     height: 84px;
     border-radius: 20px;

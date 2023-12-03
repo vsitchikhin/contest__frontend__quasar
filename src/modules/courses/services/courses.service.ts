@@ -1,12 +1,11 @@
 import { coursesStore } from 'src/modules/courses/services/courses.store';
 import { Service } from 'src/modules/service';
-import { ICourseShortDto } from 'src/modules/courses/types/courses.types';
+import { IAdminCourseDto, ICourseShortDto } from 'src/modules/courses/types/courses.types';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
 import { api } from 'boot/axios';
 
 export class CoursesService extends Service {
   private store;
-
 
   public constructor() {
     super();
@@ -29,6 +28,14 @@ export class CoursesService extends Service {
 
   public get courseLoadingStatus(): TLoadingStatus {
     return this.store.courseLoadingStatus;
+  }
+
+  public get adminCourses(): IAdminCourseDto[] | null {
+    return this.store.adminCourses;
+  }
+
+  public get adminCoursesLoadingStatus(): TLoadingStatus {
+    return this.store.adminCoursesLoadingStatus;
   }
 
   // ------------------------------------------------------------------
@@ -67,8 +74,41 @@ export class CoursesService extends Service {
 
       return false;
     }
-
   }
+
+  public async loadAdminCourses(): Promise<boolean> {
+    this.store.SET_ADMIN_COURSES_LOADING_STATUS({
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.loading,
+    });
+
+    try {
+      const response = await api.get('/api/admin/courses', {
+        headers: {
+          ...this.apiHeaders,
+        },
+      });
+
+      this.store.SET_ADMIN_COURSES_PAYLOAD(response.data);
+      this.store.SET_ADMIN_COURSES_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.loaded,
+        action: LoadingStatusActionsEnum.noAction,
+      });
+
+      return true;
+    } catch(e: any) {
+      console.log(e);
+      this.store.SET_COURSES_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.error,
+        action: LoadingStatusActionsEnum.noAction,
+        errorCode: e.statusCode.toString(),
+        msg: e.errorMessage,
+      });
+
+      return false;
+    }
+  }
+
 
   // ------------------------------------------------------------------
   // Методы

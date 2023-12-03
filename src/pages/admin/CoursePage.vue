@@ -1,5 +1,5 @@
 <template>
-  <q-page class="page-class" />
+  <q-page class="admin-page-class" />
 </template>
 
 <script lang=ts>

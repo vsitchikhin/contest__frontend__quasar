@@ -4,3 +4,8 @@ export interface ICourseShortDto {
   count: number;
   success_count: number;
 }
+
+export interface IAdminCourseDto {
+  name: string,
+  count: number,
+}

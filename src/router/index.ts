@@ -69,9 +69,10 @@ export default route(function ( /* { store, ssrContext } */ ) {
       }
 
       user = usersService.currentUser;
+      console.log(user);
 
       if (user?.permissions && user?.permissions?.includes('access_admin')) {
-        next({ name: 'AdminCourses ' });
+        next({ name: 'AdminCourses' });
       } else {
         next({ name: 'Courses' });
       }
