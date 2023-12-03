@@ -31,7 +31,53 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/admin/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [],
+    children: [
+      {
+        path: '',
+        name: 'AdminCourses',
+        component: () => import('pages/admin/CoursesPage.vue'),
+      },
+      {
+        path: 'course/:courseId',
+        name: 'AdminCourse',
+        component: () => import('pages/admin/CoursePage.vue'),
+      },
+      {
+        path: 'course/:courseId/:entityId',
+        name: 'EntityList',
+        component: () => import('pages/admin/EntityList.vue'),
+      },
+      {
+        path: 'course/:courseId/:entityId/add',
+        name: 'AddEntity',
+        component: () => import('pages/admin/AddEntity.vue.vue'),
+      },
+      {
+        path: 'course/:courseId/:entityId/allocate',
+        name: 'AllocateTasks',
+        component: () => import('pages/admin/AllocateTasks.vue'),
+      },
+      {
+        path: 'course/:courseId/:entityId/tasks',
+        name: 'EntityTasks',
+        component: () => import('pages/admin/EntityTaskList.vue'),
+      },
+      {
+        path: 'task/create',
+        name: 'CreateTask',
+        component: () => import('pages/admin/CreateTask.vue'),
+      },
+      {
+        path: 'group/create',
+        name: 'CreateGroup',
+        component: () => import('pages/admin/CreateGroup.vue'),
+      },
+      {
+        path: 'course/create',
+        name: 'CreateCourse',
+        component: () => import('pages/admin/CreateCourse.vue'),
+      },
+    ],
   },
 
   {
