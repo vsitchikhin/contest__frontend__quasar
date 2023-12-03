@@ -53,7 +53,7 @@ export default defineComponent({
   @import 'src/css/app';
 
   .con-dropdown {
-    border-radius: 10px;
+    border-radius: 20px;
 
     &__main-block {
       cursor: pointer;
@@ -69,7 +69,7 @@ export default defineComponent({
         grid-template-rows: 1fr;
         transition: grid-template-rows 0.4s ease-in-out;
         max-height: 900px;
-        overflow: scroll;
+        overflow: auto;
       }
     }
 

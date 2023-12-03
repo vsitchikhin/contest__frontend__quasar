@@ -1,13 +1,17 @@
 import { defineStore } from 'pinia';
-import { ICourseShortDto } from 'src/modules/courses/types/courses.types';
+import { IAdminCourseDto, ICourseShortDto } from 'src/modules/courses/types/courses.types';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
 
 interface ICoursesState {
   courses: ICourseShortDto[] | null;
   course: ICourseShortDto | null;
 
+  adminCourses: IAdminCourseDto[] | null;
+
   coursesLoadingStatus: TLoadingStatus;
   courseLoadingStatus: TLoadingStatus;
+
+  adminCoursesLoadingStatus: TLoadingStatus;
 }
 
 export const coursesStore = defineStore({
@@ -19,6 +23,8 @@ export const coursesStore = defineStore({
     courses: null,
     course: null,
 
+    adminCourses: null,
+
     // ----------------------------------------------------------------
     // Loading статусы
     coursesLoadingStatus: {
@@ -29,6 +35,13 @@ export const coursesStore = defineStore({
     },
 
     courseLoadingStatus: {
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.noAction,
+      errorCode: '',
+      msg: '',
+    },
+
+    adminCoursesLoadingStatus: {
       code: LoadingStatusCodesEnum.notLoaded,
       action: LoadingStatusActionsEnum.noAction,
       errorCode: '',
@@ -59,6 +72,17 @@ export const coursesStore = defineStore({
     SET_COURSE_LOADING_STATUS(status: TLoadingStatus) {
       this.courseLoadingStatus = {
         ...this.courseLoadingStatus,
+        ...status,
+      };
+    },
+
+    SET_ADMIN_COURSES_PAYLOAD(payload: IAdminCourseDto[] | null) {
+      this.adminCourses = payload;
+    },
+
+    SET_ADMIN_COURSES_LOADING_STATUS(status: TLoadingStatus) {
+      this.adminCoursesLoadingStatus = {
+        ...this.adminCoursesLoadingStatus,
         ...status,
       };
     },

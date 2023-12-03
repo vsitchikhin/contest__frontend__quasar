@@ -31,8 +31,8 @@ export interface UserFullDto {
   vstu_id?: string | null;
   created_at?: string | null; // строка вида Date().toLocaleString()
   updated_at?: string | null; // строка вида Date().toLocaleString()
-  roles: ParameterDto[] | boolean;
-  permissions: ParameterDto[] | boolean | string[];
+  roles: ParameterDto[] | false;
+  permissions: false | string[];
 }
 
 /*

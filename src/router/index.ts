@@ -47,7 +47,7 @@ export default route(function ( /* { store, ssrContext } */ ) {
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE),
   });
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
     const tokenService = new TokenService();
     const usersService = new UsersService();
 
@@ -57,7 +57,7 @@ export default route(function ( /* { store, ssrContext } */ ) {
     if (!notRequiredAuthenticationRoutes.includes(to.path) && (!tokenService.token && !useCookie<string>('jwt').value)) {
       next({ name: 'Signing' });
     } else if (isMainOrAuthPath && isUserAuthenticated) {
-      const user = usersService.currentUser;
+      let user = usersService.currentUser;
       console.log(user);
       // todo: Обработка более полноценная: если пользователь админ - переброс на админа, если пользователь студент - переброс на студента
       if (!tokenService.token) {
@@ -65,11 +65,21 @@ export default route(function ( /* { store, ssrContext } */ ) {
       }
 
       if (!user) {
-        usersService.loadCurrentUser();
-        next({ name: 'Courses' });
+        await usersService.loadCurrentUser();
       }
 
-      next({ name: 'Courses' });
+      user = usersService.currentUser;
+      console.log(user);
+
+      if (user?.permissions && user?.permissions?.includes('access_admin')) {
+        next({ name: 'AdminCourses' });
+      } else if (user?.permissions && user?.permissions.includes('access_student')) {
+        next({ name: 'Courses' });
+      } else {
+        // document.cookie
+        // next({ name: 'Auth' });
+        // todo: выкинуть ошибку
+      }
     }
     else next();
   });
