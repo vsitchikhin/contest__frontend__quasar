@@ -73,8 +73,12 @@ export default route(function ( /* { store, ssrContext } */ ) {
 
       if (user?.permissions && user?.permissions?.includes('access_admin')) {
         next({ name: 'AdminCourses' });
-      } else {
+      } else if (user?.permissions && user?.permissions.includes('access_student')) {
         next({ name: 'Courses' });
+      } else {
+        // document.cookie
+        // next({ name: 'Auth' });
+        // todo: выкинуть ошибку
       }
     }
     else next();

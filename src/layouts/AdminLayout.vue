@@ -141,12 +141,12 @@ $sidebar-width: 304px;
     transition: color 0.3s;
 
     &:hover {
-      color: $card-font;
+      color: $main-font;
       transition: color 0.3s;
     }
 
     &--active {
-      color: $main-font;
+      color: $card-font;
       transition: color 0.3s;
     }
   }
