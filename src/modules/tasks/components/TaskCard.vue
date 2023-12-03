@@ -2,7 +2,6 @@
   <q-card flat class="task-card row items-center">
     <con-status-icon :status="task.status" />
     <div class="task-card__challenge col-grow row items-center q-pl-xl">
-      <span class="task-card__challenge-id text-h6 text-white">{{ task.id }}</span>
       <span class="task-card__challenge-description text-body-1 q-pl-lg">{{ task.description }}</span>
     </div>
     <!--    <q-space class="col-1" />-->
