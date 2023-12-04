@@ -4,8 +4,17 @@
       <con-back-button />
       <con-admin-page-header header-text="Курсы" />
       <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" active />
-      <con-add-button route-name="CreateTask" />
-      <con-add-button route-name="CreateTask" />
+      <con-entity-button
+        route-name="EntityList"
+        :course-name="courseName"
+        :icon-name="ButtonIconNamesEnum.Student"
+      />
+      <con-add-button
+        route-name="AddEntity"
+        :course-name="courseName"
+        :icon-name="ButtonIconNamesEnum.Student"
+      />
+      <con-add-button route-name="CreateTask" :icon-name="ButtonIconNamesEnum.Task" />
     </div>
     <div class="admin-page-container flex column items-center">
       <admin-task-card v-for="item in taskList" :key="item.id" :task="item" />
@@ -26,9 +35,11 @@ import AdminTaskCard from 'src/modules/tasks/components/AdminTaskCard.vue';
 import { TasksService } from 'src/modules/tasks/services/tasks.service';
 import { LoadingStatusCodesEnum } from 'src/types/base.types';
 import { useRoute } from 'vue-router';
+import { ButtonIconNamesEnum } from 'components/ConAdminControls/controls.types';
+import ConEntityButton from 'components/ConAdminControls/ConEntityButton.vue';
 
 export default defineComponent({
-  components: { AdminTaskCard, ConMainTab, ConAddButton, ConAdminPageHeader, ConBackButton },
+  components: { ConEntityButton, AdminTaskCard, ConMainTab, ConAddButton, ConAdminPageHeader, ConBackButton },
   setup() {
     const tasksService = new TasksService();
     const route = useRoute();
@@ -48,7 +59,10 @@ export default defineComponent({
       taskList,
       isTasksLoaded,
 
+      courseName,
+
       ADMIN_COURSES_ROUTE_PARAMS,
+      ButtonIconNamesEnum,
     };
   },
 });

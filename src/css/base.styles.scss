@@ -1,7 +1,8 @@
 @import 'src/css/mixins/color.mixins';
 
 .page-container,
-.admin-page-container {
+.admin-page-container,
+.admin-tabs-page-container {
   @include background-blur-opacity($main-bg, 0.1, 20);
   border-radius: 20px;
   height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap});
@@ -11,6 +12,21 @@
 
 .admin-page-container {
   height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap} * 2 - #{$activity-block-height});
+}
+
+.admin-tabs-page-container {
+  height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap} * 2 - #{$activity-block-height} - #{$tabs-height});
+}
+
+.page-tabs-block {
+  @include background-blur-opacity($main-bg, 0.1, 20);
+  border-radius: 10px;
+  height: $tabs-height;
+  gap: 20px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .page-activity-block {

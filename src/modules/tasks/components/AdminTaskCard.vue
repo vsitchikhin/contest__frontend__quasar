@@ -1,7 +1,7 @@
 <template>
   <q-card flat class="admin-task-card row items-center justify-between">
     <div class="admin-task-card__challenge col-grow row items-center">
-      <span class="admin-task-card__challenge-description text-body1 ">{{ task.description }}</span>
+      <span class="admin-task-card__challenge-description text-body1">{{ task.description }}</span>
     </div>
     <div class="admin-task-card__rate-icon col-grow row items-center">
       <q-icon name="signal_cellular_alt " size="25px" class="text-secondary col-shrink" />
@@ -52,7 +52,7 @@ export default defineComponent({
   border-radius: 10px;
   padding: 30px;
   width: 100%;
-  @include background-blur-opacity($main-bg, 0.1);
+  @include background-blur-opacity($main-bg, 0.01);
 
   &__challenge-description {
     color: $card-font;
