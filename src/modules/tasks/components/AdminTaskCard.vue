@@ -1,15 +1,15 @@
 <template>
-  <q-card class="admin-task-card row-items-center">
-    <div class="admin-task-card__challenge col-grow row items-center q-pl-xl">
-      <span class="admin-task-card__challenge-description text-body-1 q-pl-lg">{{ task.description }}</span>
+  <q-card flat class="admin-task-card row items-center justify-between">
+    <div class="admin-task-card__challenge col-grow row items-center">
+      <span class="admin-task-card__challenge-description text-body1 ">{{ task.description }}</span>
     </div>
     <div class="admin-task-card__rate-icon col-grow row items-center">
-      <q-icon name="signal_cellular_alt " size="16px" class="text-secondary col-shrink" />
-      <span class="admin-text-body1 text-white q-pl-sm">{{ task.rating }}</span>
+      <q-icon name="signal_cellular_alt " size="25px" class="text-secondary col-shrink" />
+      <span class="text-h6 text-weight-regular text-white q-pl-sm">{{ task.rating }}</span>
     </div>
-    <div class="admin-task-card__variant col-grow row items-center">
-      <span class="admin-text-secondary text-bold text-body1">{{ task.variant_count }}</span>
-      <span class="admin-text-white text-body1 q-pl-sm">вариант</span>
+    <div class="admin-task-card__variant row items-center">
+      <span class="text-secondary text-bold text-h6 text-weight-regular">{{ task.variant_count }}</span>
+      <span class="text-h6 text-weight-regular q-pl-sm">{{ variantsPlural.$t(task.variant_count) }}</span>
     </div>
     <!--<div class="task-card__rating row col-grow q-pr-xl items-center">
       <span class="text-secondary text-body1">{{ task.score }}/{{ task.max_score }}</span>
@@ -24,6 +24,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { IAdminTaskDto } from 'src/modules/tasks/types/tasks.types';
+import { usePluralization } from 'src/modules/core/utils/Strings.utils';
 
 export default defineComponent({
   props: {
@@ -33,8 +34,12 @@ export default defineComponent({
     },
   },
 
-  setup(props) {
-    return {};
+  setup() {
+    const variantsPlural = usePluralization('Нет вариантов | вариант | варианта | вариантов');
+
+    return {
+      variantsPlural,
+    };
   },
 });
 
@@ -45,7 +50,7 @@ export default defineComponent({
 
 .admin-task-card {
   border-radius: 10px;
-  padding: 30px 70px 30px 30px;
+  padding: 30px;
   width: 100%;
   @include background-blur-opacity($main-bg, 0.1);
 
@@ -63,6 +68,10 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     border-radius: 0 10px 10px 0;
+  }
+
+  &__variant {
+    color: $card-font
   }
 }
 </style>

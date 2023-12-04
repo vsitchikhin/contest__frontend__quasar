@@ -178,16 +178,16 @@ export class TasksService extends Service {
       action: LoadingStatusActionsEnum.loading,
     });
 
-    console.log(courseName);
     try {
-      const response = await api.get('/courses/tasks', {
-        headers: {
-          ...this.apiHeaders,
-        },
-        params: {
+      const response = await api.post('/api/admin/courses/tasks',
+        {
           course_name: courseName,
         },
-      });
+        {
+          headers: {
+            ...this.apiHeaders,
+          },
+        });
 
       this.store.SET_ADMIN_TASK_LIST_PAYLOAD(response.data);
       this.store.SET_ADMIN_TASK_LIST_LOADING_STATUS({

@@ -5,6 +5,7 @@
       <con-admin-page-header header-text="Курсы" />
       <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" active />
       <con-add-button route-name="CreateTask" />
+      <con-add-button route-name="CreateTask" />
     </div>
     <div class="admin-page-container flex column items-center">
       <admin-task-card v-for="item in taskList" :key="item.id" :task="item" />
