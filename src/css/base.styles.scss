@@ -15,7 +15,7 @@
 }
 
 .admin-tabs-page-container {
-  height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap} * 2 - #{$activity-block-height} - #{$tabs-height});
+  height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap} * 3 - #{$activity-block-height} - #{$tabs-height});
 }
 
 .page-tabs-block {
@@ -23,7 +23,6 @@
   border-radius: 10px;
   height: $tabs-height;
   gap: 20px;
-  padding: 30px;
   display: flex;
   justify-content: space-around;
   align-items: center;

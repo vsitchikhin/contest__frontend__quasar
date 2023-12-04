@@ -3,7 +3,7 @@
     <div class="page-activity-block">
       <con-back-button />
       <con-admin-page-header header-text="Курсы" />
-      <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" active />
+      <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" />
       <con-entity-button
         route-name="EntityList"
         :course-name="courseName"
@@ -13,12 +13,13 @@
         route-name="AddEntity"
         :course-name="courseName"
         :icon-name="ButtonIconNamesEnum.Student"
+        active
       />
       <con-add-button route-name="CreateTask" :icon-name="ButtonIconNamesEnum.Task" />
     </div>
     <div class="page-tabs-block">
-      <span class="text-white text-h6 text-weight-regular">tab1</span>
-      <span class="text-white text-h6 text-weight-regular">tab2</span>
+      <span class="text-white text-h6 text-weight-regular cursor-pointer">tab1</span>
+      <span class="text-white text-h6 text-weight-regular cursor-pointer">tab2</span>
     </div>
     <div class="admin-tabs-page-container flex column items-center">
       entity list
