@@ -1,7 +1,7 @@
 import { Service } from 'src/modules/service';
 import { tasksStore } from 'src/modules/tasks/services/tasks.store';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
-import { ITaskDto, ITaskHistory, ITaskSolution } from 'src/modules/tasks/types/tasks.types';
+import { IAdminTaskDto, ITaskDto, ITaskHistory, ITaskSolution } from 'src/modules/tasks/types/tasks.types';
 import { api } from 'boot/axios';
 
 export class TasksService extends Service {
@@ -36,6 +36,14 @@ export class TasksService extends Service {
 
   public get historyLoadingStatus(): TLoadingStatus {
     return this.store.historyLoadingStatus;
+  }
+
+  public get adminTaskList(): IAdminTaskDto[] | null {
+    return this.store.adminTaskList;
+  }
+
+  public get adminTaskListLoadingStatus(): TLoadingStatus {
+    return this.store.adminTaskLoadingStatus;
   }
 
   // ------------------------------------------------------------------
@@ -160,6 +168,42 @@ export class TasksService extends Service {
 
       return true;
     } catch(e: any) {
+      return false;
+    }
+  }
+
+  public async loadAdminTaskList(courseName: string): Promise<boolean> {
+    this.store.SET_ADMIN_TASK_LIST_LOADING_STATUS({
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.loading,
+    });
+
+    try {
+      const response = await api.post('/api/admin/courses/tasks',
+        {
+          course_name: courseName,
+        },
+        {
+          headers: {
+            ...this.apiHeaders,
+          },
+        });
+
+      this.store.SET_ADMIN_TASK_LIST_PAYLOAD(response.data);
+      this.store.SET_ADMIN_TASK_LIST_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.loaded,
+        action: LoadingStatusActionsEnum.noAction,
+      });
+
+      return true;
+    } catch(e: any) {
+      this.store.SET_ADMIN_TASK_LIST_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.error,
+        action: LoadingStatusActionsEnum.noAction,
+        errorCode: e.statusCode,
+        msg: e.errorMessage,
+      });
+
       return false;
     }
   }

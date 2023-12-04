@@ -43,17 +43,17 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/admin/CoursePage.vue'),
       },
       {
-        path: 'course/:entityId',
+        path: 'course/entities',
         name: 'EntityList',
         component: () => import('pages/admin/EntityList.vue'),
       },
       {
-        path: 'course/:entityId/add',
+        path: 'course/entity/add',
         name: 'AddEntity',
-        component: () => import('pages/admin/AddEntity.vue.vue'),
+        component: () => import('pages/admin/AddEntity.vue'),
       },
       {
-        path: 'course/:entityId/allocate',
+        path: 'course/:entityId/allocate-tasks',
         name: 'AllocateTasks',
         component: () => import('pages/admin/AllocateTasks.vue'),
       },

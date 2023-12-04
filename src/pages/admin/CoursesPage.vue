@@ -4,7 +4,7 @@
       <con-back-button />
       <con-admin-page-header header-text="Курсы" />
       <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" active />
-      <con-add-button route-name="CreateTask" />
+      <con-add-button route-name="CreateCourse" :icon-name="AddButtonIconNamesEnum.Course" />
     </div>
     <div class="admin-page-container flex column items-center">
       <admin-course-card v-for="item in courses" :key="item.name" :course="item" />
@@ -24,6 +24,7 @@ import ConAdminPageHeader from 'components/ConAdminControls/ConAdminPageHeader.v
 import ConMainTab from 'components/ConAdminControls/ConMainTab.vue';
 import { ADMIN_COURSES_ROUTE_PARAMS } from 'src/modules/core/constants/routes.consts';
 import ConAddButton from 'components/ConAdminControls/ConAddButton.vue';
+import { ButtonIconNamesEnum } from 'components/ConAdminControls/controls.types';
 
 export default defineComponent({
   components: { ConAddButton, ConMainTab, ConAdminPageHeader, ConBackButton, AdminCourseCard },
@@ -42,6 +43,7 @@ export default defineComponent({
       courses,
 
       ADMIN_COURSES_ROUTE_PARAMS,
+      AddButtonIconNamesEnum: ButtonIconNamesEnum,
     };
   },
 });

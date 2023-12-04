@@ -1,5 +1,5 @@
 <template>
-  <div class="con-add-button text-white flex justify-center items-center" :class="buttonClasses" @click="gotoAddTasks">
+  <div class="con-entity-button text-white flex justify-center items-center" :class="buttonClasses" @click="gotoRoute">
     <q-icon size="25px" :name="iconName" />
   </div>
 </template>
@@ -15,10 +15,6 @@ export default defineComponent({
     courseName: {
       type: String,
       default: () => undefined,
-    },
-    isAddStudent: {
-      type: Boolean,
-      default: () => false,
     },
     routeName: {
       type: String,
@@ -49,7 +45,7 @@ export default defineComponent({
         name: props.routeName,
         query: {
           courseName: props.courseName,
-          entityType: props.isAddStudent ? AddEntityTypesEnum.Student : undefined,
+          entityType: AddEntityTypesEnum.Student,
         },
       });
     }
@@ -57,7 +53,7 @@ export default defineComponent({
     return {
       buttonClasses,
 
-      gotoAddTasks: gotoRoute,
+      gotoRoute,
     };
   },
 });
@@ -66,23 +62,23 @@ export default defineComponent({
 <style scoped lang="scss">
 @import 'src/css/app';
 
-.con-add-button {
+.con-entity-button {
   min-width: 70px;
   width: 70px;
   height: 70px;
   border-radius: 10px;
 
-  @include background-blur-opacity($add-button, 0.5);
+  @include background-blur-opacity($back-button, 0.5);
   transition: 0.3s;
 
   &:hover {
-    @include background-blur-opacity($add-button, 0.7);
+    @include background-blur-opacity($back-button, 0.7);
     transition: 0.3s;
 
   }
 
   &--active {
-    background-color: $add-button;
+    background-color: $back-button;
     transition: 0.3s;
   }
 }

@@ -1,15 +1,15 @@
 <template>
-  <q-card flat class="course-card row">
-    <div class="course-card__name col-grow">
-      <span class="course-card__course-name text-h6 text-white text-weight-regular">{{ course.name }}</span>
+  <q-card flat class="admin-course-card row items-center">
+    <div class="admin-course-card__name col-grow">
+      <span class="admin-course-card__course-name text-h6 text-white text-weight-regular">{{ course.name }}</span>
     </div>
     <q-space class="col-auto" />
-    <div class="course-card__progress-title coll-grow q-pr-xl flex items-center">
+    <div class="admin-course-card__progress-title coll-grow q-pr-xl flex items-center">
       <span class="text-body1 text-secondary q-pr-sm">{{ course.count }}</span>
       <span class="text-body1 text-white">{{ tasksPlural.$t(course.count) }}</span>
     </div>
-    <div class="course-card__button absolute absolute-right" />
-    <q-btn flat class="course-card__button absolute bg-secondary text-white" @click="gotoCourse">
+    <div class="admin-course-card__button absolute absolute-right" />
+    <q-btn flat class="admin-course-card__button absolute bg-secondary text-white" @click="gotoCourse">
       <q-icon name="chevron_right" />
     </q-btn>
   </q-card>
@@ -51,7 +51,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import 'src/css/app';
 
-.course-card {
+.admin-course-card {
   border-radius: 10px;
   padding: 30px 70px 30px 30px;
   width: 100%;

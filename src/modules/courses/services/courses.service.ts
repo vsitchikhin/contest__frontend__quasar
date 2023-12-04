@@ -98,7 +98,7 @@ export class CoursesService extends Service {
       return true;
     } catch(e: any) {
       console.log(e);
-      this.store.SET_COURSES_LOADING_STATUS({
+      this.store.SET_ADMIN_COURSES_LOADING_STATUS({
         code: LoadingStatusCodesEnum.error,
         action: LoadingStatusActionsEnum.noAction,
         errorCode: e.statusCode.toString(),

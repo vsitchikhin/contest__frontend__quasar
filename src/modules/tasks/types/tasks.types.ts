@@ -38,3 +38,10 @@ export interface ITaskHistory {
   status: TaskStatusesEnum;
   tests: ITestDto[];
 }
+
+export interface IAdminTaskDto {
+  id: string;
+  description: string;
+  rating: number;
+  variant_count: number;
+}
