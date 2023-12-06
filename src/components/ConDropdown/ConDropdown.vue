@@ -1,6 +1,6 @@
 <template>
   <div class="con-dropdown">
-    <div class="con-dropdown__main-block" @click="changeState">
+    <div class="con-dropdown__main-block" :class="mainBlockClasses" :aria-disabled="disabled" @click="changeState">
       <slot name="main" />
     </div>
     <div class="con-dropdown__dropdown" :class="dropdownClasses">
@@ -20,6 +20,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: () => false,
+    },
   },
 
   emits: {
@@ -36,13 +40,18 @@ export default defineComponent({
       'con-dropdown__dropdown--open': isOpen.value,
     }));
 
-    function changeState() {
+    const mainBlockClasses = computed(() => ({
+      'cursor-pointer': !props.disabled,
+    }));
 
+    function changeState() {
       // isOpen.value = !isOpen.value;
     }
 
     return {
+      mainBlockClasses,
       dropdownClasses,
+
       changeState,
     };
   },
@@ -54,10 +63,6 @@ export default defineComponent({
 
   .con-dropdown {
     border-radius: 20px;
-
-    &__main-block {
-      cursor: pointer;
-    }
 
     &__dropdown {
       display: grid;

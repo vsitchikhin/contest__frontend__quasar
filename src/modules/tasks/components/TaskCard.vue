@@ -64,6 +64,7 @@ export default defineComponent({
   &__challenge-description {
     color: $card-font;
     max-width: 40vw;
+    width: 40vw;
   }
 
   &__button {

@@ -1,5 +1,5 @@
 <template>
-  <con-dropdown v-model="isDropdownOpen" class="history-card" :class="cardClasses">
+  <con-dropdown v-model="isDropdownOpen" class="history-card" :disabled="disableDropdown" :class="cardClasses">
     <template #main>
       <div class="history-card__card-container row items-center" @click="openDropdown">
         <con-status-icon class="col-shrink" :status="historyCard.status" />
@@ -49,12 +49,17 @@ export default defineComponent({
       if (props.historyCard.status === TaskStatusesEnum.success) {
         return 'Отправлено успешное решение';
       }
+      if (props.historyCard.status === TaskStatusesEnum.zero) {
+        return 'Задача на проверке';
+      }
 
       return titlePlural.$t(props.historyCard.tests.length);
     });
 
+    const disableDropdown = computed(() => props.historyCard.status === TaskStatusesEnum.success || props.historyCard.status === TaskStatusesEnum.zero);
+
     const isDropdownOpen = ref(false);
-    const dropdownIcon = computed(() => isDropdownOpen.value ? 'expand_less' : 'expand_more');
+    const dropdownIcon = computed(() => disableDropdown.value ? '' : isDropdownOpen.value ? 'expand_less' : 'expand_more');
     const isCardDisabled = computed(() => !props.historyCard.tests.length);
 
     const cardClasses = computed(() => ({
@@ -70,6 +75,7 @@ export default defineComponent({
 
     return {
       dropdownIcon,
+      disableDropdown,
 
       historyTitle,
 
