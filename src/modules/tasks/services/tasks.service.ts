@@ -1,7 +1,13 @@
 import { Service } from 'src/modules/service';
 import { tasksStore } from 'src/modules/tasks/services/tasks.store';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
-import { IAdminTaskDto, ITaskDto, ITaskHistory, ITaskSolution } from 'src/modules/tasks/types/tasks.types';
+import {
+  IAdminTaskDto,
+  ITaskDto,
+  ITaskHistory,
+  ITaskSolution,
+  TaskStatusesEnum,
+} from 'src/modules/tasks/types/tasks.types';
 import { api } from 'boot/axios';
 
 export class TasksService extends Service {
@@ -86,6 +92,11 @@ export class TasksService extends Service {
       action: LoadingStatusActionsEnum.loading,
     });
 
+    this.store.SET_HISTORY_LOADING_STATUS({
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.loading,
+    });
+
     try {
       const response = await api.get(`/api/tasks/${taskId}`, {
         headers: {
@@ -99,6 +110,12 @@ export class TasksService extends Service {
         action: LoadingStatusActionsEnum.noAction,
       });
 
+      this.store.SET_TASK_HISTORY_PAYLOAD(response.data.history);
+      this.store.SET_HISTORY_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.loaded,
+        action: LoadingStatusActionsEnum.noAction,
+      });
+
       return true;
     } catch(e: any) {
       this.store.SET_TASK_LOADING_STATUS({
@@ -108,31 +125,6 @@ export class TasksService extends Service {
         msg: e.errorMessage,
       });
 
-      return false;
-    }
-  }
-
-  public async loadTaskHistory(taskId: string): Promise<boolean> {
-    this.store.SET_HISTORY_LOADING_STATUS({
-      code: LoadingStatusCodesEnum.notLoaded,
-      action: LoadingStatusActionsEnum.loading,
-    });
-
-    try {
-      const response = await api.get(`/api/history/${taskId}`, {
-        headers: {
-          ...this.apiHeaders,
-        },
-      });
-
-      this.store.SET_TASK_HISTORY_PAYLOAD(response.data);
-      this.store.SET_HISTORY_LOADING_STATUS({
-        code: LoadingStatusCodesEnum.loaded,
-        action: LoadingStatusActionsEnum.noAction,
-      });
-
-      return true;
-    } catch(e: any) {
       this.store.SET_HISTORY_LOADING_STATUS({
         code: LoadingStatusCodesEnum.error,
         action: LoadingStatusActionsEnum.noAction,
@@ -145,7 +137,6 @@ export class TasksService extends Service {
   }
 
   public async submitTask(solution: string): Promise<boolean> {
-    debugger;
     const currentTask = this.task;
 
     if (!currentTask) {
@@ -158,13 +149,27 @@ export class TasksService extends Service {
         {
           task_id: currentTask.id,
           code: solution,
-          problem: currentTask.problem,
         } as ITaskSolution,
         {
           headers: {
             ...this.apiHeaders,
           },
         });
+
+      const historyForUpdate = this.store.history ? [...this.store.history] :  [];
+
+      const newHistoryRecord: ITaskHistory = {
+        id: Math.random() * Math.random() * 10,
+        task_id: currentTask.id,
+        code: '',
+        score: 0,
+        status: TaskStatusesEnum.zero,
+        tests: [],
+      };
+
+      historyForUpdate.unshift(newHistoryRecord);
+
+      this.store.SET_TASK_HISTORY_PAYLOAD(historyForUpdate);
 
       return true;
     } catch(e: any) {

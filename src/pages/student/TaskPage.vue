@@ -7,7 +7,7 @@
         <span>Набранные баллы: {{ task?.score }}</span>
       </div>
       <div class="task__button">
-        <q-btn no-caps flat class="text-white bg-secondary" @click="gotoEditor">Перейти к решению</q-btn>
+        <q-btn no-caps flat :disable="isButtonDisabled" class="text-white bg-secondary" @click="gotoEditor">Перейти к решению</q-btn>
       </div>
     </div>
     <div class="page-content-container task__history">
@@ -25,6 +25,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { LoadingStatusCodesEnum } from 'src/types/base.types';
 import ConFullPageLoading from 'components/ConFullPageLoading/ConFullPageLoading.vue';
 import TaskHistory from 'src/modules/tasks/components/TaskHistory.vue';
+import { TaskStatusesEnum } from 'src/modules/tasks/types/tasks.types';
 
 export default defineComponent({
   components: { TaskHistory, ConFullPageLoading },
@@ -38,10 +39,14 @@ export default defineComponent({
     const isHistoryLoading = computed(() => tasksService.historyLoadingStatus.code !== LoadingStatusCodesEnum.loaded);
 
     tasksService.setActiveTask(taskId.value);
-    tasksService.loadTaskHistory(taskId.value);
 
     const task = computed(() => tasksService.task);
     const history = computed(() => tasksService.history);
+
+    const isButtonDisabled = computed(() => history.value && history.value[0] && (
+      history.value[0].status === TaskStatusesEnum.zero ||
+        history.value[0].status === TaskStatusesEnum.success
+    ));
 
     function gotoEditor() {
       router.push({ name: 'TaskEditor', params: { taskId: taskId.value } });
@@ -53,6 +58,8 @@ export default defineComponent({
 
       history,
       isHistoryLoading,
+
+      isButtonDisabled,
 
       gotoEditor,
     };
