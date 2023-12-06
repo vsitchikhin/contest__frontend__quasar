@@ -12,7 +12,7 @@
       <con-add-button
         route-name="AddEntity"
         :course-name="courseId"
-        :icon-name="ButtonIconNamesEnum.Student"
+        :icon-name="ButtonIconNamesEnum.AddStudent"
       />
       <con-add-button route-name="CreateTask" :icon-name="ButtonIconNamesEnum.Task" />
     </div>

@@ -8,7 +8,7 @@
 import { computed, defineComponent, PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import { ButtonIconNamesEnum } from 'components/ConAdminControls/controls.types';
-import { AddEntityTypesEnum } from 'src/modules/courses/types/entity.types';
+import { EntityTypesEnum } from 'src/modules/courses/types/entity.types';
 
 export default defineComponent({
   props: {
@@ -51,7 +51,7 @@ export default defineComponent({
           courseId: props.courseId,
         },
         query: {
-          entityType: props.isAddStudent ? AddEntityTypesEnum.Student : undefined,
+          entityType: props.isAddStudent ? EntityTypesEnum.Student : undefined,
         },
       });
     }
