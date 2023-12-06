@@ -12,7 +12,7 @@ import { AddEntityTypesEnum } from 'src/modules/courses/types/entity.types';
 
 export default defineComponent({
   props: {
-    courseName: {
+    courseId: {
       type: String,
       default: () => undefined,
     },
@@ -43,8 +43,10 @@ export default defineComponent({
       }
       router.push({
         name: props.routeName,
+        params: {
+          courseName: props.courseId,
+        },
         query: {
-          courseName: props.courseName,
           entityType: AddEntityTypesEnum.Student,
         },
       });

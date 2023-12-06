@@ -177,17 +177,14 @@ export class TasksService extends Service {
     }
   }
 
-  public async loadAdminTaskList(courseName: string): Promise<boolean> {
+  public async loadAdminTaskList(courseId: string): Promise<boolean> {
     this.store.SET_ADMIN_TASK_LIST_LOADING_STATUS({
       code: LoadingStatusCodesEnum.notLoaded,
       action: LoadingStatusActionsEnum.loading,
     });
 
     try {
-      const response = await api.post('/api/admin/courses/tasks',
-        {
-          course_name: courseName,
-        },
+      const response = await api.get(`/api/admin/courses/${courseId}/tasks`,
         {
           headers: {
             ...this.apiHeaders,

@@ -89,6 +89,7 @@ export class CoursesService extends Service {
         },
       });
 
+      console.log(response.data);
       this.store.SET_ADMIN_COURSES_PAYLOAD(response.data);
       this.store.SET_ADMIN_COURSES_LOADING_STATUS({
         code: LoadingStatusCodesEnum.loaded,

@@ -38,32 +38,32 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/admin/CoursesPage.vue'),
       },
       {
-        path: 'course',
+        path: 'course/:courseId',
         name: 'AdminCourse',
         component: () => import('pages/admin/CoursePage.vue'),
       },
       {
-        path: 'course/entities',
+        path: 'course/:courseId/entities',
         name: 'EntityList',
         component: () => import('pages/admin/EntityList.vue'),
       },
       {
-        path: 'course/entity/add',
+        path: 'course/:courseId/entity/add',
         name: 'AddEntity',
         component: () => import('pages/admin/AddEntity.vue'),
       },
       {
-        path: 'course/:entityId/allocate-tasks',
+        path: 'course/:courseId/:entityId/allocate-tasks',
         name: 'AllocateTasks',
         component: () => import('pages/admin/AllocateTasks.vue'),
       },
       {
-        path: 'course/:entityId/tasks',
+        path: 'course/:courseId/:entityId/tasks',
         name: 'EntityTasks',
         component: () => import('pages/admin/EntityTaskList.vue'),
       },
       {
-        path: 'task/create',
+        path: 'task/:courseId/create',
         name: 'CreateTask',
         component: () => import('pages/admin/CreateTask.vue'),
       },

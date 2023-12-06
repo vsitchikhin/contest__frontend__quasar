@@ -6,12 +6,12 @@
       <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" active />
       <con-entity-button
         route-name="EntityList"
-        :course-name="courseName"
+        :course-id="courseId"
         :icon-name="ButtonIconNamesEnum.Student"
       />
       <con-add-button
         route-name="AddEntity"
-        :course-name="courseName"
+        :course-name="courseId"
         :icon-name="ButtonIconNamesEnum.Student"
       />
       <con-add-button route-name="CreateTask" :icon-name="ButtonIconNamesEnum.Task" />
@@ -44,22 +44,22 @@ export default defineComponent({
     const tasksService = new TasksService();
     const route = useRoute();
 
-    const courseName = computed(() => (Array.isArray(route.query.courseName)
-      ? route.query.courseName[0]
-      : route.query.courseName) || '');
+    const courseId = computed(() => (Array.isArray(route.params.courseId)
+      ? route.params.courseId[0]
+      : route.params.courseId) || '');
 
     const taskList = computed(() => tasksService.adminTaskList);
     const isTasksLoaded = computed(() => tasksService.adminTaskListLoadingStatus.code === LoadingStatusCodesEnum.loaded);
 
     if (!taskList.value) { // todo: || taskList.value.course !== route.query.courseName) {
-      tasksService.loadAdminTaskList(courseName.value);
+      tasksService.loadAdminTaskList(courseId.value);
     }
 
     return {
       taskList,
       isTasksLoaded,
 
-      courseName,
+      courseId,
 
       ADMIN_COURSES_ROUTE_PARAMS,
       ButtonIconNamesEnum,

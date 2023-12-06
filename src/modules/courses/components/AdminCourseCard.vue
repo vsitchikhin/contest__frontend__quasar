@@ -35,7 +35,7 @@ export default defineComponent({
     const tasksPlural = usePluralization('Нет задач | задача | задачи | задач');
 
     function gotoCourse() {
-      router.push({ name: 'AdminCourse', query: { courseName: props.course.name } });
+      router.push({ name: 'AdminCourse', params: { courseId: props.course.id } });
     }
 
     return {
