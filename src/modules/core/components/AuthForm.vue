@@ -82,6 +82,7 @@ export default defineComponent({
 
   &__input {
     padding: 20px 12px;
+    width: 70%;
     background: none;
     outline: none;
     border: none;
