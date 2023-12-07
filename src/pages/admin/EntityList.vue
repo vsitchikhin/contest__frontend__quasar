@@ -19,8 +19,13 @@
     </div>
     <con-entity-tabs v-model="activeTab" :tabs="entityTabs" />
     <div class="admin-tabs-page-container flex column items-center">
-      entity list
-      <!--      <q-inner-loading :showing="!isTasksLoaded" dark color="secondary" style="border-radius: 20px" />-->
+      <div v-show="isStudents" class="cards-container full-width">
+        <student-course-card v-for="item in studentsList" :key="item.id" :student="item" />
+      </div>
+      <div v-show="isGroups" class="cards-container full-width">
+        <group-course-card v-for="item in groupsList" :key="item.id" :group="item" />
+      </div>
+      <q-inner-loading :showing="!isDataLoaded" dark color="secondary" style="border-radius: 20px" />
     </div>
   </q-page>
 </template>
@@ -37,10 +42,16 @@ import { ADMIN_COURSES_ROUTE_PARAMS } from 'src/modules/core/constants/routes.co
 import { ButtonIconNamesEnum } from 'components/ConAdminControls/controls.types';
 import ConEntityTabs from 'components/ConEntityTabs/ConEntityTabs.vue';
 import { entityTabs } from 'src/modules/courses/consts/entities.consts';
+import { EntityTypesEnum } from 'src/modules/courses/types/entity.types';
+import { CoursesService } from 'src/modules/courses/services/courses.service';
+import { LoadingStatusCodesEnum } from 'src/types/base.types';
+import StudentCourseCard from 'src/modules/courses/components/StudentCourseCard.vue';
+import GroupCourseCard from 'src/modules/courses/components/GroupCourseCard.vue';
 
 export default defineComponent({
-  components: { ConEntityTabs, ConBackButton, ConEntityButton, ConMainTab, ConAddButton, ConAdminPageHeader },
+  components: { GroupCourseCard, StudentCourseCard, ConEntityTabs, ConBackButton, ConEntityButton, ConMainTab, ConAddButton, ConAdminPageHeader },
   setup() {
+    const coursesService = new CoursesService();
     const route = useRoute();
     const router = useRouter();
 
@@ -51,6 +62,27 @@ export default defineComponent({
     const courseId = computed(() => (Array.isArray(route.params.courseId) ?
       route.params.courseId[0] :
       route.params.courseId) || '');
+
+    // ---------------------------------------------------------------
+    // Загрузка данных
+    coursesService.loadEntityList(entityType.value as EntityTypesEnum, courseId.value);
+
+    const studentsList = computed(() => coursesService.courseStudents);
+    const groupsList = computed(() => coursesService.courseGroups);
+
+    // ---------------------------------------------------------------
+    // Параметры отображения
+    const isStudentsLoaded = computed(() => coursesService.courseStudentsLoadingStatus.code === LoadingStatusCodesEnum.loaded);
+    const isGroupsLoaded = computed(() => coursesService.courseGroupsLoadingStatus.code === LoadingStatusCodesEnum.loaded);
+
+    const isStudents = computed(() => entityType.value === EntityTypesEnum.Student);
+    const isGroups = computed(() => entityType.value === EntityTypesEnum.Group);
+
+    const isDataLoaded = computed(() => (
+      entityType.value === EntityTypesEnum.Student && isStudentsLoaded.value
+    ) || (
+      entityType.value === EntityTypesEnum.Group && isGroupsLoaded.value
+    ));
 
     const entityButtonIcon = computed(() => entityType.value === 'student'
       ? ButtonIconNamesEnum.Student
@@ -63,6 +95,7 @@ export default defineComponent({
 
     watch(activeTab, () => {
       router.push({ query: { entityType: activeTab.value.entityType } });
+      coursesService.loadEntityList(activeTab.value.entityType, courseId.value);
     });
 
     return {
@@ -73,6 +106,13 @@ export default defineComponent({
 
       activeTab,
       entityTabs,
+
+      isDataLoaded,
+      isStudents,
+      isGroups,
+
+      studentsList,
+      groupsList,
 
       ADMIN_COURSES_ROUTE_PARAMS,
       ButtonIconNamesEnum,

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { IAdminCourseDto, ICourseShortDto } from 'src/modules/courses/types/courses.types';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
+import { IGroupInfo, IUserInfo } from 'src/modules/courses/types/entity.types';
 
 interface ICoursesState {
   courses: ICourseShortDto[] | null;
@@ -12,6 +13,12 @@ interface ICoursesState {
   courseLoadingStatus: TLoadingStatus;
 
   adminCoursesLoadingStatus: TLoadingStatus;
+
+  courseStudents: IUserInfo[] | null;
+  courseGroups: IGroupInfo[] | null;
+
+  courseStudentsLoadingStatus: TLoadingStatus;
+  courseGroupsLoadingStatus: TLoadingStatus;
 }
 
 export const coursesStore = defineStore({
@@ -24,6 +31,9 @@ export const coursesStore = defineStore({
     course: null,
 
     adminCourses: null,
+
+    courseStudents: null,
+    courseGroups: null,
 
     // ----------------------------------------------------------------
     // Loading статусы
@@ -47,6 +57,20 @@ export const coursesStore = defineStore({
       errorCode: '',
       msg: '',
     },
+
+    courseStudentsLoadingStatus: {
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.noAction,
+      errorCode: '',
+      msg: '',
+    },
+
+    courseGroupsLoadingStatus: {
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.noAction,
+      errorCode: '',
+      msg: '',
+    },
   }),
 
   actions: {
@@ -58,6 +82,18 @@ export const coursesStore = defineStore({
 
     SET_COURSE_PAYLOAD(payload: ICourseShortDto | null) {
       this.course = payload;
+    },
+
+    SET_ADMIN_COURSES_PAYLOAD(payload: IAdminCourseDto[] | null) {
+      this.adminCourses = payload;
+    },
+
+    SET_COURSE_GROUPS_PAYLOAD(payload: IGroupInfo[] | null) {
+      this.courseGroups = payload;
+    },
+
+    SET_COURSE_STUDENTS_PAYLOAD(payload: IUserInfo[] | null) {
+      this.courseStudents = payload;
     },
 
     // ----------------------------------------------------------------
@@ -76,13 +112,23 @@ export const coursesStore = defineStore({
       };
     },
 
-    SET_ADMIN_COURSES_PAYLOAD(payload: IAdminCourseDto[] | null) {
-      this.adminCourses = payload;
-    },
-
     SET_ADMIN_COURSES_LOADING_STATUS(status: TLoadingStatus) {
       this.adminCoursesLoadingStatus = {
         ...this.adminCoursesLoadingStatus,
+        ...status,
+      };
+    },
+
+    SET_COURSE_GROUPS_LOADING_STATUS(status: TLoadingStatus) {
+      this.courseGroupsLoadingStatus = {
+        ...this.courseGroupsLoadingStatus,
+        ...status,
+      };
+    },
+
+    SET_COURSE_STUDENTS_LOADING_STATUS(status: TLoadingStatus) {
+      this.courseStudentsLoadingStatus = {
+        ...this.courseStudentsLoadingStatus,
         ...status,
       };
     },
