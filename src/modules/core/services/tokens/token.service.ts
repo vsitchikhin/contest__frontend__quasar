@@ -15,6 +15,8 @@ export class TokenService extends Service {
     return this.store.token;
   }
 
+  // ------------------------------------------------------------
+  // Методы
   public setToken(token: string | null) {
     this.store.SET_TOKEN(token);
   }

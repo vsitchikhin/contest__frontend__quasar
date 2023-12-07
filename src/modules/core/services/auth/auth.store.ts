@@ -47,31 +47,9 @@ export const authStore = defineStore({
       this.user = payload;
     },
 
-    SET_USERS_PAYLOAD(payload: UserShortDto[] | null) {
-      this.users = payload;
-    },
-
-    SET_SELECTED_USER_PAYLOAD(payload: SelectedUserDto | null) {
-      this.selectedUser = payload;
-    },
-
     SET_USER_LOADING_STATUS(status: TLoadingStatus) {
       this.userLoadingStatus = {
         ...this.userLoadingStatus,
-        ...status,
-      };
-    },
-
-    SET_USERS_LOADING_STATUS(status: TLoadingStatus) {
-      this.usersLoadingStatus = {
-        ...this.usersLoadingStatus,
-        ...status,
-      };
-    },
-
-    SET_SELECTED_USER_LOADING_STATUS(status: TLoadingStatus) {
-      this.selectedUserLoadingStatus = {
-        ...this.selectedUserLoadingStatus,
         ...status,
       };
     },
