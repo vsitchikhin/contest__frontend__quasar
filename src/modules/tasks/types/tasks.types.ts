@@ -45,3 +45,30 @@ export interface IAdminTaskDto {
   rating: number;
   variant_count: number;
 }
+
+export interface IUserTaskDto {
+  id: number,
+  description: string,
+  rating: number,
+  variant: number,
+  status: TaskStatusesEnum,
+  score: number,
+  max_score: number
+}
+
+export interface IGroupTaskHistory {
+  id: number,
+  name: string,
+  middle_name: string,
+  last_name: string,
+  email: string,
+  vstu_id: string
+}
+
+export interface IGroupTaskDto {
+  id: number,
+  description: string,
+  rating: number,
+  variant_count: number,
+  history: IGroupTaskHistory[]
+}

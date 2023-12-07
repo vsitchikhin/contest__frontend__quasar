@@ -2,7 +2,7 @@
   <q-page class="admin-page-class">
     <div class="page-activity-block">
       <con-back-button />
-      <con-admin-page-header header-text="Курсы" />
+      <con-admin-page-header :header-text="header" />
       <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" />
       <con-entity-button
         route-name="EntityList"
@@ -48,8 +48,12 @@ export default defineComponent({
       route.params.courseId[0] :
       route.params.courseId) || '');
 
+    const header = computed(() => 'Назначение студентов на курс');
+
     return {
       courseId,
+
+      header,
 
       ADMIN_COURSES_ROUTE_PARAMS,
       ButtonIconNamesEnum,

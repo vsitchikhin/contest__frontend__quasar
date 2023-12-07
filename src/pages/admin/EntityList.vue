@@ -2,7 +2,7 @@
   <q-page class="admin-page-class">
     <div class="page-activity-block">
       <con-back-button />
-      <con-admin-page-header header-text="Курсы" />
+      <con-admin-page-header :header-text="courseName" />
       <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" />
       <con-entity-button
         route-name="EntityList"
@@ -63,6 +63,8 @@ export default defineComponent({
       route.params.courseId[0] :
       route.params.courseId) || '');
 
+    const courseName = computed(() => coursesService.adminCourses?.find(c => c.id === parseInt(courseId.value))?.name || '');
+
     // ---------------------------------------------------------------
     // Загрузка данных
     coursesService.loadEntityList(entityType.value as EntityTypesEnum, courseId.value);
@@ -100,6 +102,7 @@ export default defineComponent({
 
     return {
       courseId,
+      courseName,
 
       entityButtonIcon,
       addEntityButtonIcon,
