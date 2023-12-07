@@ -41,7 +41,11 @@ export class AuthService extends Service {
       tokenService.setToken(response.data?.token || null);
 
       window.dispatchEvent(new CustomEvent(CHANGE_TOKEN_CUSTOM_EVENT));
-      const isUserLoaded = await this.loadUser();
+      let isUserLoaded = false;
+      if (response.data.token) {
+        isUserLoaded = await this.loadUser();
+      }
+
 
       return isUserLoaded;
     } catch(e: any) {
@@ -70,13 +74,14 @@ export class AuthService extends Service {
   }
 
   public async loadUser() {
+    console.log('it is load user');
     this.store.SET_USER_LOADING_STATUS({
       code: LoadingStatusCodesEnum.notLoaded,
       action: LoadingStatusActionsEnum.loading,
     });
 
     try {
-      const response = await api.get<null, UserFullDto>('/api/user', {
+      const response = await api.get('/api/user', {
         headers: {
           ...this.apiHeaders,
         },

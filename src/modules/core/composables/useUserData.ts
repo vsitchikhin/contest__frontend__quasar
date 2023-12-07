@@ -7,7 +7,9 @@ export function useUserData() {
   const usersService = new UsersService();
   const userDataLoaded = computed(() => usersService.currentUserLoadingStatus.code === LoadingStatusCodesEnum.loaded);
 
-  if (!usersService.currentUser) {
+  const token = useCookie<string>('jwt');
+
+  if (!usersService.currentUser && !!token.value) {
     usersService.loadCurrentUser();
   }
 

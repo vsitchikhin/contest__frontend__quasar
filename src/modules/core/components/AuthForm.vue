@@ -15,6 +15,7 @@
       no-caps
       unelevated
       class="bg-secondary text-h6 text-weight-regular text-white form__button q-btn--no-uppercase"
+      :loading="isLoading"
       @click="signing"
     >
       Войти
@@ -35,7 +36,10 @@ export default defineComponent({
     const login = ref<string | null>(null);
     const password = ref<string | null>(null);
 
+    const isLoading = ref(false);
+
     async function signing() {
+      isLoading.value = true;
       if (login.value && password.value) {
         const isLogin = await authService.authUser(login.value, password.value);
         console.log('isLogin - ', isLogin);
@@ -43,6 +47,8 @@ export default defineComponent({
         if (isLogin) {
           await router.push({ path: '/' });
         }
+
+        isLoading.value = false;
 
         return;
       }
@@ -52,6 +58,8 @@ export default defineComponent({
     return {
       login,
       password,
+
+      isLoading,
 
       signing,
     };

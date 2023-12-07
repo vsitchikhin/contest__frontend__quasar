@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import {Notify} from "quasar";
 
 const api: AxiosInstance = axios.create({
   withCredentials: true,
@@ -11,6 +12,12 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+
+    Notify.create({
+      message: error.response.data.errorMessage,
+      color: "red-5",
+    })
+
     if (401 === error.response.status) {
       // Код для обработки ошибки
       return error.response;

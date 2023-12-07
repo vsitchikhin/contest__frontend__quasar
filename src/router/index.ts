@@ -58,13 +58,14 @@ export default route(function ( /* { store, ssrContext } */ ) {
       next({ name: 'Signing' });
     } else if (isMainOrAuthPath && isUserAuthenticated) {
       let user = usersService.currentUser;
-      console.log(user);
-      // todo: Обработка более полноценная: если пользователь админ - переброс на админа, если пользователь студент - переброс на студента
+
       if (!tokenService.token) {
         tokenService.setToken(useCookie<string>('jwt').value || null);
       }
 
-      if (!user) {
+      const token = useCookie<string>('jwt');
+
+      if (!user && !!tokenService.token && !!token.value) {
         await usersService.loadCurrentUser();
       }
 
