@@ -1,8 +1,8 @@
 <template>
   <div class="page-class items-center">
     <div class="flex justify-center page-class__header-block">
-      <span class="text-grey-6 text-weight-bold text-h4 cursor-pointer" @click="gotoAuth">Авторизация</span>
-      <span class="text-grey-2 text-weight-bold text-h4 cursor-pointer">Регистрация</span>
+      <span class="text-grey-6 text-weight-medium text-h4 cursor-pointer" @click="gotoAuth">Авторизация</span>
+      <span class="text-grey-2 text-weight-medium text-h4 cursor-pointer">Регистрация</span>
     </div>
     <h2 class="text-h2 text-secondary">РЕГИСТРАЦИЯЯЯЯЯЯ</h2>
   </div>

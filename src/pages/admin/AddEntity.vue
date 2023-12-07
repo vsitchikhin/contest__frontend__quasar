@@ -2,17 +2,17 @@
   <q-page class="admin-page-class">
     <div class="page-activity-block">
       <con-back-button />
-      <con-admin-page-header header-text="Курсы" />
+      <con-admin-page-header :header-text="header" />
       <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" />
       <con-entity-button
         route-name="EntityList"
-        :course-name="courseName"
+        :course-id="courseId"
         :icon-name="ButtonIconNamesEnum.Student"
       />
       <con-add-button
         route-name="AddEntity"
-        :course-name="courseName"
-        :icon-name="ButtonIconNamesEnum.Student"
+        :course-id="courseId"
+        :icon-name="ButtonIconNamesEnum.AddStudent"
         active
       />
       <con-add-button route-name="CreateTask" :icon-name="ButtonIconNamesEnum.Task" />
@@ -44,12 +44,16 @@ export default defineComponent({
   setup() {
     const route = useRoute();
 
-    const courseName = computed(() => (Array.isArray(route.query.courseName) ?
-      route.query.courseName[0] :
-      route.query.courseName) || '');
+    const courseId = computed(() => (Array.isArray(route.params.courseId) ?
+      route.params.courseId[0] :
+      route.params.courseId) || '');
+
+    const header = computed(() => 'Назначение студентов на курс');
 
     return {
-      courseName,
+      courseId,
+
+      header,
 
       ADMIN_COURSES_ROUTE_PARAMS,
       ButtonIconNamesEnum,

@@ -5,21 +5,22 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import HistoryCard from 'src/modules/tasks/components/HistoryCard.vue';
-import { TasksService } from 'src/modules/tasks/services/tasks.service';
+import { ITaskHistory } from 'src/modules/tasks/types/tasks.types';
 
 export default defineComponent({
   components: { HistoryCard },
 
+  props: {
+    history: {
+      type: Array as PropType<ITaskHistory[]>,
+      required: true,
+    },
+  },
+
   setup() {
-    const tasksService = new TasksService();
-
-    const history = computed(() => tasksService.history);
-
-    return {
-      history,
-    };
+    return {};
   },
 });
 </script>

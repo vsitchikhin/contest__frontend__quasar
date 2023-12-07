@@ -8,11 +8,15 @@
 import { computed, defineComponent, PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import { ButtonIconNamesEnum } from 'components/ConAdminControls/controls.types';
-import { AddEntityTypesEnum } from 'src/modules/courses/types/entity.types';
+import { EntityTypesEnum } from 'src/modules/courses/types/entity.types';
 
 export default defineComponent({
   props: {
-    courseName: {
+    courseId: {
+      type: String,
+      default: () => undefined,
+    },
+    entityId: {
       type: String,
       default: () => undefined,
     },
@@ -24,6 +28,10 @@ export default defineComponent({
       type: Boolean,
       default: () => false,
     },
+    entityType: {
+      type: String as PropType<EntityTypesEnum>,
+      default: () => undefined,
+    },
     iconName: {
       type: String as PropType<ButtonIconNamesEnum>,
       required: true,
@@ -34,7 +42,7 @@ export default defineComponent({
     const router = useRouter();
 
     const buttonClasses = computed(() => ({
-      'con-add-button--active': props.active,
+      'con-entity-button--active': props.active,
     }));
 
     function gotoRoute() {
@@ -43,9 +51,12 @@ export default defineComponent({
       }
       router.push({
         name: props.routeName,
+        params: {
+          courseId: props.courseId,
+          entityId: props.entityId,
+        },
         query: {
-          courseName: props.courseName,
-          entityType: AddEntityTypesEnum.Student,
+          entityType: props.entityType,
         },
       });
     }

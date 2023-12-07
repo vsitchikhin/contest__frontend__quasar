@@ -1,7 +1,7 @@
 import { Service } from 'src/modules/service';
 import { authStore } from 'src/modules/core/services/auth/auth.store';
-import { SelectedUserDto, UserFullDto, UserShortDto } from 'src/modules/core/types/auth.types';
-import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
+import { UserFullDto, UserShortDto } from 'src/modules/core/types/auth.types';
+import { LoadingStatusActionsEnum, LoadingStatusCodesEnum } from 'src/types/base.types';
 import { CHANGE_TOKEN_CUSTOM_EVENT } from 'src/types/general.consts';
 import { api } from 'boot/axios';
 import { TokenService } from 'src/modules/core/services/tokens/token.service';
@@ -24,24 +24,8 @@ export class AuthService extends Service {
     return this.store.user;
   }
 
-  public get selectedUser(): SelectedUserDto | null {
-    return this.store.selectedUser;
-  }
-
-  public get userLoadingStatus(): TLoadingStatus {
-    return this.store.userLoadingStatus;
-  }
-
-  public get usersLoadingStatus(): TLoadingStatus {
-    return this.store.usersLoadingStatus;
-  }
-
   public get error(): boolean {
     return this.store.error;
-  }
-
-  public get relocatedFrom() {
-    return this.store.relocatedFrom;
   }
 
   // ------------------------------------------------------------------
@@ -57,7 +41,11 @@ export class AuthService extends Service {
       tokenService.setToken(response.data?.token || null);
 
       window.dispatchEvent(new CustomEvent(CHANGE_TOKEN_CUSTOM_EVENT));
-      const isUserLoaded = await this.loadUser();
+      let isUserLoaded = false;
+      if (response.data.token) {
+        isUserLoaded = await this.loadUser();
+      }
+
 
       return isUserLoaded;
     } catch(e: any) {
@@ -74,14 +62,26 @@ export class AuthService extends Service {
     }
   }
 
+  public async logoutUser() {
+    try {
+      await api.post('/api/logout', {}, {
+        headers: { ...this.apiHeaders },
+      });
+      this.updateTokenInBrowser('');
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
   public async loadUser() {
+    console.log('it is load user');
     this.store.SET_USER_LOADING_STATUS({
       code: LoadingStatusCodesEnum.notLoaded,
       action: LoadingStatusActionsEnum.loading,
     });
 
     try {
-      const response = await api.get<null, UserFullDto>('/api/user', {
+      const response = await api.get('/api/user', {
         headers: {
           ...this.apiHeaders,
         },

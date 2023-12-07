@@ -1,4 +1,6 @@
-
+<template>
+  <q-page class="admin-page-class" />
+</template>
 
 <script lang=ts>
 import { defineComponent } from 'vue';

@@ -1,7 +1,7 @@
 <template>
   <q-card flat class="course-card row">
     <div class="course-card__name col-grow">
-      <span class="course-card__course-name text-h6 text-white text-weight-regular">{{ course.name }}</span>
+      <span class="course-card__course-name text-body1 text-white">{{ course.name }}</span>
     </div>
     <q-space class="col-auto" />
     <div class="course-card__progress row col-4 items-center q-pr-lg">

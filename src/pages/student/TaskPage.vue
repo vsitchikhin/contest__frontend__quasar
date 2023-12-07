@@ -12,7 +12,7 @@
     </div>
     <div class="page-content-container task__history">
       <span class="text-h6 text-weight-regular task__history-title">История решений</span>
-      <task-history />
+      <task-history :history="history" />
     </div>
     <con-full-page-loading v-show="isLoading" />
   </q-page>
@@ -36,16 +36,15 @@ export default defineComponent({
 
     const taskId = computed(() => Array.isArray(route.params.taskId) ? route.params.taskId[0] : route.params.taskId);
     const isLoading = computed(() => tasksService.taskLoadingStatus.code !== LoadingStatusCodesEnum.loaded);
-    const isHistoryLoading = computed(() => tasksService.historyLoadingStatus.code !== LoadingStatusCodesEnum.loaded);
 
-    tasksService.setActiveTask(taskId.value);
+    tasksService.loadTask(taskId.value);
 
     const task = computed(() => tasksService.task);
-    const history = computed(() => tasksService.history);
+    const history = computed(() => task.value?.history || []);
 
-    const isButtonDisabled = computed(() => history.value && history.value[0] && (
-      history.value[0].status === TaskStatusesEnum.zero ||
-        history.value[0].status === TaskStatusesEnum.success
+    const isButtonDisabled = computed(() => task.value?.history && task.value.history[0] && (
+      task.value.history[0].status === TaskStatusesEnum.zero ||
+        task.value.history[0].status === TaskStatusesEnum.success
     ));
 
     function gotoEditor() {
@@ -57,8 +56,6 @@ export default defineComponent({
       isLoading,
 
       history,
-      isHistoryLoading,
-
       isButtonDisabled,
 
       gotoEditor,

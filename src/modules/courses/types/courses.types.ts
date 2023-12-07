@@ -6,6 +6,7 @@ export interface ICourseShortDto {
 }
 
 export interface IAdminCourseDto {
+  id: number;
   name: string,
   count: number,
 }

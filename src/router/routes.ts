@@ -1,103 +1,122 @@
 import { RouteRecordRaw } from 'vue-router';
+import TasksPage from 'pages/student/TasksPage.vue';
+import CoursesPage from 'pages/student/CoursesPage.vue';
+import TaskPage from 'pages/student/TaskPage.vue';
+import EditorPage from 'pages/student/EditorPage.vue';
+import MainLayout from 'layouts/MainLayout.vue';
+import AdminLayout from 'layouts/AdminLayout.vue';
+import AdminCourses from 'pages/admin/CoursesPage.vue';
+import AdminCourse from 'pages/admin/CoursePage.vue';
+import EntityList from 'pages/admin/EntityList.vue';
+import AddEntity from 'pages/admin/AddEntity.vue';
+import AllocateTasks from 'pages/admin/AllocateTasks.vue';
+import EntityTaskList from 'pages/admin/EntityTaskList.vue';
+import CreateTask from 'pages/admin/CreateTask.vue';
+import CreateGroup from 'pages/admin/CreateGroup.vue';
+import CreateCourse from 'pages/admin/CreateCourse.vue';
+import UsersPage from 'pages/admin/UsersPage.vue';
+import AuthLayout from 'layouts/AuthLayout.vue';
+import LoginPage from 'pages/auth/LoginPage.vue';
+import RegisterPage from 'pages/auth/RegisterPage.vue';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/student/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => MainLayout,
     children: [
       {
         path: '',
         name: 'Courses',
-        component: () => import('pages/student/CoursesPage.vue'),
+        component: () => CoursesPage,
       },
       {
         path: 'course/:courseId',
         name: 'Course',
-        component: () => import('pages/student/TasksPage.vue'),
+        component: () => TasksPage,
       },
       {
         path: 'task/:taskId',
         name: 'Task',
-        component: () => import('pages/student/TaskPage.vue'),
+        component: () => TaskPage,
       },
       {
         path: 'task/:taskId/edit',
         name: 'TaskEditor',
-        component: () => import('pages/student/EditorPage.vue'),
+        component: () => EditorPage,
       },
     ],
   },
 
   {
     path: '/admin/',
-    component: () => import('layouts/AdminLayout.vue'),
+    component: () => AdminLayout,
     children: [
       {
         path: '',
         name: 'AdminCourses',
-        component: () => import('pages/admin/CoursesPage.vue'),
+        component: () => AdminCourses,
       },
       {
-        path: 'course',
+        path: 'course/:courseId',
         name: 'AdminCourse',
-        component: () => import('pages/admin/CoursePage.vue'),
+        component: () => AdminCourse,
       },
       {
-        path: 'course/entities',
+        path: 'course/:courseId/entities',
         name: 'EntityList',
-        component: () => import('pages/admin/EntityList.vue'),
+        component: () => EntityList,
       },
       {
-        path: 'course/entity/add',
+        path: 'course/:courseId/entity/add',
         name: 'AddEntity',
-        component: () => import('pages/admin/AddEntity.vue'),
+        component: () => AddEntity,
       },
       {
-        path: 'course/:entityId/allocate-tasks',
+        path: 'course/:courseId/:entityId/allocate-tasks',
         name: 'AllocateTasks',
-        component: () => import('pages/admin/AllocateTasks.vue'),
+        component: () => AllocateTasks,
       },
       {
-        path: 'course/:entityId/tasks',
+        path: 'course/:courseId/:entityId/tasks',
         name: 'EntityTasks',
-        component: () => import('pages/admin/EntityTaskList.vue'),
+        component: () => EntityTaskList,
       },
       {
-        path: 'task/create',
+        path: 'task/:courseId/create',
         name: 'CreateTask',
-        component: () => import('pages/admin/CreateTask.vue'),
+        component: () => CreateTask,
       },
       {
         path: 'group/create',
         name: 'CreateGroup',
-        component: () => import('pages/admin/CreateGroup.vue'),
+        component: () => CreateGroup,
       },
       {
         path: 'course/create',
         name: 'CreateCourse',
-        component: () => import('pages/admin/CreateCourse.vue'),
+        component: () => CreateCourse,
       },
       {
         path: 'users',
         name: 'Users',
-        component: () => import('pages/admin/UsersPage.vue'),
+        component: () => UsersPage,
       },
     ],
   },
 
   {
     path: '/auth/',
-    component: () => import('layouts/AuthLayout.vue'),
+    component: () => AuthLayout,
     children: [
       {
         path: 'signing',
         name: 'Signing',
-        component: () => import('pages/auth/LoginPage.vue'),
+        component: () => LoginPage,
       },
       {
         path: 'signup',
         name: 'Signup',
-        component: () => import('pages/auth/RegisterPage.vue'),
+        component: () => RegisterPage,
       },
     ],
   },

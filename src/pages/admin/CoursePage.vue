@@ -2,17 +2,17 @@
   <q-page class="admin-page-class">
     <div class="page-activity-block">
       <con-back-button />
-      <con-admin-page-header header-text="Курсы" />
+      <con-admin-page-header :header-text="courseName" />
       <con-main-tab :route-params="ADMIN_COURSES_ROUTE_PARAMS" active />
       <con-entity-button
         route-name="EntityList"
-        :course-name="courseName"
+        :course-id="courseId"
         :icon-name="ButtonIconNamesEnum.Student"
       />
       <con-add-button
         route-name="AddEntity"
-        :course-name="courseName"
-        :icon-name="ButtonIconNamesEnum.Student"
+        :course-name="courseId"
+        :icon-name="ButtonIconNamesEnum.AddStudent"
       />
       <con-add-button route-name="CreateTask" :icon-name="ButtonIconNamesEnum.Task" />
     </div>
@@ -37,28 +37,33 @@ import { LoadingStatusCodesEnum } from 'src/types/base.types';
 import { useRoute } from 'vue-router';
 import { ButtonIconNamesEnum } from 'components/ConAdminControls/controls.types';
 import ConEntityButton from 'components/ConAdminControls/ConEntityButton.vue';
+import { CoursesService } from 'src/modules/courses/services/courses.service';
 
 export default defineComponent({
   components: { ConEntityButton, AdminTaskCard, ConMainTab, ConAddButton, ConAdminPageHeader, ConBackButton },
   setup() {
     const tasksService = new TasksService();
+    const coursesService = new CoursesService();
     const route = useRoute();
 
-    const courseName = computed(() => (Array.isArray(route.query.courseName)
-      ? route.query.courseName[0]
-      : route.query.courseName) || '');
+    const courseId = computed(() => (Array.isArray(route.params.courseId)
+      ? route.params.courseId[0]
+      : route.params.courseId) || '');
+
+    const courseName = computed(() => coursesService.adminCourses?.find(c => c.id === parseInt(courseId.value))?.name || '');
 
     const taskList = computed(() => tasksService.adminTaskList);
     const isTasksLoaded = computed(() => tasksService.adminTaskListLoadingStatus.code === LoadingStatusCodesEnum.loaded);
 
     if (!taskList.value) { // todo: || taskList.value.course !== route.query.courseName) {
-      tasksService.loadAdminTaskList(courseName.value);
+      tasksService.loadAdminTaskList(courseId.value);
     }
 
     return {
       taskList,
       isTasksLoaded,
 
+      courseId,
       courseName,
 
       ADMIN_COURSES_ROUTE_PARAMS,

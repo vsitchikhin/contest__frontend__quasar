@@ -1,8 +1,8 @@
 <template>
   <div class="page-class">
     <div class="flex justify-center page-class__header-block">
-      <span class="text-grey-2 text-weight-bold text-h4 cursor-pointer">Авторизация</span>
-      <span class="text-grey-6 text-weight-bold text-h4 cursor-pointer" @click="gotoRegister">Регистрация</span>
+      <span class="text-grey-2 text-h4 text-weight-medium text-weight-medium cursor-pointer">Авторизация</span>
+      <span class="text-grey-6 text-h4 text-weight-medium cursor-pointer" @click="gotoRegister">Регистрация</span>
     </div>
     <auth-form />
   </div>

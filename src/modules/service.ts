@@ -11,7 +11,7 @@ export class Service {
   }
 
   protected updateTokenInBrowser(token: string) {
-    window.document.cookie = `jwt=${token}`;
+    window.document.cookie = `jwt=${token || ''};path=/`;
     this.apiHeaders = {
       Authorization: `Bearer ${token}`,
     };
