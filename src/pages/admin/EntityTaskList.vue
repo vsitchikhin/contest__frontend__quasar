@@ -83,13 +83,25 @@ export default defineComponent({
     // Загрузка данных
     tasksService.loadEntityTaskList((entityType.value as EntityTypesEnum), entityId.value, courseId.value);
 
+    if (!coursesService.adminCourses) {
+      coursesService.loadAdminCourses();
+    }
+
+    if (entityType.value === EntityTypesEnum.Group && !coursesService.courseGroups) {
+      coursesService.loadCourseGroups(courseId.value);
+    }
+
+    if (entityType.value === EntityTypesEnum.Student && !coursesService.courseStudents) {
+      coursesService.loadCourseStudents(courseId.value);
+    }
+
     watch(entityType, () => tasksService.loadEntityTaskList((entityType.value as EntityTypesEnum), entityId.value, courseId.value));
 
     // ---------------------------------------------------------------
     // Параметры отображения
     const headerText = computed(() => entityType.value === EntityTypesEnum.Student
-      ? `Задачи курса ${courseName.value}, назначенные студенту ${student.value?.name}`
-      : `Задачи курса ${courseName.value}, назначенные группе ${group.value?.name}`);
+      ? `Задачи ${student.value?.name || ''} ${courseName.value}`
+      : `Задачи ${group.value?.name || ''} ${courseName.value}`);
 
     const isStudentTasksLoaded = computed(() => tasksService.studentTaskListLoadingStatus.code === LoadingStatusCodesEnum.loaded);
     const isGroupTasksLoaded = computed(() => tasksService.groupTaskListLoadingStatus.code === LoadingStatusCodesEnum.loaded);
