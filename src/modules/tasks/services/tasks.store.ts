@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { IAdminTaskDto, ITaskDto, ITaskHistory } from 'src/modules/tasks/types/tasks.types';
+import { IAdminTaskDto, IGroupTaskDto, ITaskDto, ITaskHistory, IUserTaskDto } from 'src/modules/tasks/types/tasks.types';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
 
 interface ITasksState {
@@ -10,11 +10,17 @@ interface ITasksState {
 
   adminTaskList: IAdminTaskDto[] | null;
 
+  studentTaskList: IUserTaskDto[] | null;
+  groupTaskList: IGroupTaskDto[] | null;
+
   taskListLoadingStatus: TLoadingStatus;
   taskLoadingStatus: TLoadingStatus;
   historyLoadingStatus: TLoadingStatus;
 
   adminTaskLoadingStatus: TLoadingStatus;
+
+  studentTaskListLoadingStatus: TLoadingStatus;
+  groupTaskListLoadingStatus: TLoadingStatus;
 }
 
 export const tasksStore = defineStore({
@@ -27,6 +33,9 @@ export const tasksStore = defineStore({
     history: null,
 
     adminTaskList: null,
+
+    studentTaskList: null,
+    groupTaskList: null,
 
     taskListLoadingStatus: {
       code: LoadingStatusCodesEnum.notLoaded,
@@ -55,6 +64,20 @@ export const tasksStore = defineStore({
       errorCode: '',
       msg: '',
     },
+
+    studentTaskListLoadingStatus: {
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.noAction,
+      errorCode: '',
+      msg: '',
+    },
+
+    groupTaskListLoadingStatus: {
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.noAction,
+      errorCode: '',
+      msg: '',
+    },
   }),
 
   actions: {
@@ -74,6 +97,14 @@ export const tasksStore = defineStore({
 
     SET_ADMIN_TASK_LIST_PAYLOAD(payload: IAdminTaskDto[] | null) {
       this.adminTaskList = payload;
+    },
+
+    SET_STUDENT_TASK_LIST_PAYLOAD(payload: IUserTaskDto[] | null) {
+      this.studentTaskList = payload;
+    },
+
+    SET_GROUP_TASK_LIST_PAYLOAD(payload: IGroupTaskDto[] | null) {
+      this.groupTaskList = payload;
     },
 
     // ----------------------------------------------------------------
@@ -102,6 +133,20 @@ export const tasksStore = defineStore({
     SET_ADMIN_TASK_LIST_LOADING_STATUS(status: TLoadingStatus) {
       this.adminTaskLoadingStatus = {
         ...this.adminTaskLoadingStatus,
+        ...status,
+      };
+    },
+
+    SET_STUDENT_TASK_LIST_LOADING_STATUS(status: TLoadingStatus) {
+      this.studentTaskListLoadingStatus = {
+        ...this.studentTaskListLoadingStatus,
+        ...status,
+      };
+    },
+
+    SET_GROUP_TASK_LIST_LOADING_STATUS(status: TLoadingStatus) {
+      this.groupTaskListLoadingStatus = {
+        ...this.groupTaskListLoadingStatus,
         ...status,
       };
     },

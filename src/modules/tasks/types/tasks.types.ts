@@ -70,5 +70,5 @@ export interface IGroupTaskDto {
   description: string,
   rating: number,
   variant_count: number,
-  history: IGroupTaskHistory[]
+  history: IGroupTaskHistory[],
 }

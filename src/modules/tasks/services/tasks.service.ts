@@ -3,12 +3,15 @@ import { tasksStore } from 'src/modules/tasks/services/tasks.store';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
 import {
   IAdminTaskDto,
+  IGroupTaskDto,
   ITaskDto,
   ITaskHistory,
   ITaskSolution,
+  IUserTaskDto,
   TaskStatusesEnum,
 } from 'src/modules/tasks/types/tasks.types';
 import { api } from 'boot/axios';
+import { EntityTypesEnum } from 'src/modules/courses/types/entity.types';
 
 export class TasksService extends Service {
   private store;
@@ -50,6 +53,22 @@ export class TasksService extends Service {
 
   public get adminTaskListLoadingStatus(): TLoadingStatus {
     return this.store.adminTaskLoadingStatus;
+  }
+
+  public get studentTaskList(): IUserTaskDto[] | null {
+    return this.store.studentTaskList;
+  }
+
+  public get studentTaskListLoadingStatus(): TLoadingStatus {
+    return this.store.studentTaskListLoadingStatus;
+  }
+
+  public get groupTaskList(): IGroupTaskDto[] | null {
+    return this.store.groupTaskList;
+  }
+
+  public get groupTaskListLoadingStatus(): TLoadingStatus {
+    return this.store.groupTaskListLoadingStatus;
   }
 
   // ------------------------------------------------------------------
@@ -210,6 +229,66 @@ export class TasksService extends Service {
     }
   }
 
+  public async loadStudentTaskList(studentId: string, courseId: string) {
+    this.store.SET_STUDENT_TASK_LIST_LOADING_STATUS({
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.loading,
+    });
+
+    try {
+      const response = await api.get(`/api/admin/courses/${courseId}/users/${studentId}`, {
+        headers: { ...this.apiHeaders },
+      });
+
+      this.store.SET_STUDENT_TASK_LIST_PAYLOAD(response.data);
+      this.store.SET_STUDENT_TASK_LIST_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.loaded,
+        action: LoadingStatusActionsEnum.noAction,
+      });
+
+      return true;
+    } catch (e: any) {
+      this.store.SET_STUDENT_TASK_LIST_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.error,
+        action: LoadingStatusActionsEnum.noAction,
+        errorCode: e.statusCode,
+        msg: e.errorMessage,
+      });
+
+      return false;
+    }
+  }
+
+  public async loadGroupTaskList(groupId: string, courseId: string) {
+    this.store.SET_GROUP_TASK_LIST_LOADING_STATUS({
+      code: LoadingStatusCodesEnum.notLoaded,
+      action: LoadingStatusActionsEnum.loading,
+    });
+
+    try {
+      const response = await api.get(`/api/admin/courses/${courseId}/groups/${groupId}`, {
+        headers: { ...this.apiHeaders },
+      });
+
+      this.store.SET_GROUP_TASK_LIST_PAYLOAD(response.data);
+      this.store.SET_GROUP_TASK_LIST_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.loaded,
+        action: LoadingStatusActionsEnum.noAction,
+      });
+
+      return true;
+    } catch (e: any) {
+      this.store.SET_GROUP_TASK_LIST_LOADING_STATUS({
+        code: LoadingStatusCodesEnum.error,
+        action: LoadingStatusActionsEnum.noAction,
+        errorCode: e.statusCode,
+        msg: e.errorMessage,
+      });
+
+      return false;
+    }
+  }
+
   // ------------------------------------------------------------------
   // Методы
   public async setActiveTask(taskId: string) {
@@ -229,6 +308,15 @@ export class TasksService extends Service {
     } else {
       // todo: Обработать вариант, если вдруг задача не найдена
       return await this.loadTask(taskId);
+    }
+  }
+
+  public async loadEntityTaskList(entityType: EntityTypesEnum, entityId: string, courseId: string) {
+    if (entityType === EntityTypesEnum.Student) {
+      await this.loadStudentTaskList(entityId, courseId);
+    }
+    if (entityType === EntityTypesEnum.Group) {
+      await this.loadGroupTaskList(entityId, courseId);
     }
   }
 }

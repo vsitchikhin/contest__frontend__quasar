@@ -16,6 +16,10 @@ export default defineComponent({
       type: String,
       default: () => undefined,
     },
+    entityId: {
+      type: String,
+      default: () => undefined,
+    },
     routeName: {
       type: String,
       required: true,
@@ -23,6 +27,10 @@ export default defineComponent({
     active: {
       type: Boolean,
       default: () => false,
+    },
+    entityType: {
+      type: String as PropType<EntityTypesEnum>,
+      default: () => undefined,
     },
     iconName: {
       type: String as PropType<ButtonIconNamesEnum>,
@@ -44,10 +52,11 @@ export default defineComponent({
       router.push({
         name: props.routeName,
         params: {
-          courseName: props.courseId,
+          courseId: props.courseId,
+          entityId: props.entityId,
         },
         query: {
-          entityType: EntityTypesEnum.Student,
+          entityType: props.entityType,
         },
       });
     }
