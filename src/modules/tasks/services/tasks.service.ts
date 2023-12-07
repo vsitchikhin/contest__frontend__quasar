@@ -39,14 +39,6 @@ export class TasksService extends Service {
     return this.store.taskLoadingStatus;
   }
 
-  public get history(): ITaskHistory[] | null {
-    return this.store.history;
-  }
-
-  public get historyLoadingStatus(): TLoadingStatus {
-    return this.store.historyLoadingStatus;
-  }
-
   public get adminTaskList(): IAdminTaskDto[] | null {
     return this.store.adminTaskList;
   }
@@ -111,11 +103,6 @@ export class TasksService extends Service {
       action: LoadingStatusActionsEnum.loading,
     });
 
-    this.store.SET_HISTORY_LOADING_STATUS({
-      code: LoadingStatusCodesEnum.notLoaded,
-      action: LoadingStatusActionsEnum.loading,
-    });
-
     try {
       const response = await api.get(`/api/tasks/${taskId}`, {
         headers: {
@@ -129,22 +116,9 @@ export class TasksService extends Service {
         action: LoadingStatusActionsEnum.noAction,
       });
 
-      this.store.SET_TASK_HISTORY_PAYLOAD(response.data.history);
-      this.store.SET_HISTORY_LOADING_STATUS({
-        code: LoadingStatusCodesEnum.loaded,
-        action: LoadingStatusActionsEnum.noAction,
-      });
-
       return true;
     } catch(e: any) {
       this.store.SET_TASK_LOADING_STATUS({
-        code: LoadingStatusCodesEnum.error,
-        action: LoadingStatusActionsEnum.noAction,
-        errorCode: e.statusCode,
-        msg: e.errorMessage,
-      });
-
-      this.store.SET_HISTORY_LOADING_STATUS({
         code: LoadingStatusCodesEnum.error,
         action: LoadingStatusActionsEnum.noAction,
         errorCode: e.statusCode,
@@ -174,9 +148,7 @@ export class TasksService extends Service {
             ...this.apiHeaders,
           },
         });
-
-      const historyForUpdate = this.store.history ? [...this.store.history] :  [];
-
+      const task = this.task;
       const newHistoryRecord: ITaskHistory = {
         id: Math.random() * Math.random() * 10,
         task_id: currentTask.id,
@@ -186,9 +158,9 @@ export class TasksService extends Service {
         tests: [],
       };
 
-      historyForUpdate.unshift(newHistoryRecord);
+      task?.history?.unshift(newHistoryRecord);
 
-      this.store.SET_TASK_HISTORY_PAYLOAD(historyForUpdate);
+      this.store.SET_TASK_PAYLOAD(task);
 
       return true;
     } catch(e: any) {

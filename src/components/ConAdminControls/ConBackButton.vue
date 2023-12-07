@@ -13,7 +13,7 @@ export default defineComponent({
     const router = useRouter();
 
     function goBack() {
-      router.back();
+      router.push({ name: 'AdminCourses' });
     }
 
     return {

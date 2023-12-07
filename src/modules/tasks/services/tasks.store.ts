@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia';
-import { IAdminTaskDto, IGroupTaskDto, ITaskDto, ITaskHistory, IUserTaskDto } from 'src/modules/tasks/types/tasks.types';
+import { IAdminTaskDto, IGroupTaskDto, ITaskDto, IUserTaskDto } from 'src/modules/tasks/types/tasks.types';
 import { LoadingStatusActionsEnum, LoadingStatusCodesEnum, TLoadingStatus } from 'src/types/base.types';
 
 interface ITasksState {
   taskList: ITaskDto[] | null;
   task: ITaskDto | null;
-
-  history: ITaskHistory[] | null;
 
   adminTaskList: IAdminTaskDto[] | null;
 
@@ -15,7 +13,6 @@ interface ITasksState {
 
   taskListLoadingStatus: TLoadingStatus;
   taskLoadingStatus: TLoadingStatus;
-  historyLoadingStatus: TLoadingStatus;
 
   adminTaskLoadingStatus: TLoadingStatus;
 
@@ -30,8 +27,6 @@ export const tasksStore = defineStore({
     taskList: null,
     task: null,
 
-    history: null,
-
     adminTaskList: null,
 
     studentTaskList: null,
@@ -45,13 +40,6 @@ export const tasksStore = defineStore({
     },
 
     taskLoadingStatus: {
-      code: LoadingStatusCodesEnum.notLoaded,
-      action: LoadingStatusActionsEnum.noAction,
-      errorCode: '',
-      msg: '',
-    },
-
-    historyLoadingStatus: {
       code: LoadingStatusCodesEnum.notLoaded,
       action: LoadingStatusActionsEnum.noAction,
       errorCode: '',
@@ -91,10 +79,6 @@ export const tasksStore = defineStore({
       this.taskList = payload;
     },
 
-    SET_TASK_HISTORY_PAYLOAD(payload: ITaskHistory[] | null) {
-      this.history = payload;
-    },
-
     SET_ADMIN_TASK_LIST_PAYLOAD(payload: IAdminTaskDto[] | null) {
       this.adminTaskList = payload;
     },
@@ -119,13 +103,6 @@ export const tasksStore = defineStore({
     SET_TASK_LIST_LOADING_STATUS(status: TLoadingStatus) {
       this.taskListLoadingStatus = {
         ...this.taskListLoadingStatus,
-        ...status,
-      };
-    },
-
-    SET_HISTORY_LOADING_STATUS(status: TLoadingStatus) {
-      this.historyLoadingStatus = {
-        ...this.historyLoadingStatus,
         ...status,
       };
     },

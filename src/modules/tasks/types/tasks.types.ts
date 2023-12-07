@@ -15,6 +15,7 @@ export interface ITaskDto {
   score?: number;
   max_score?: number;
   status?: TaskStatusesEnum;
+  history: ITaskHistory[];
 }
 
 export interface ITaskSolution {
