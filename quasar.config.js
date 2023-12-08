@@ -9,6 +9,7 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 const { configure } = require('quasar/wrappers')
+const monacoEditorPlugin = require('vite-plugin-monaco-editor')
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -29,7 +30,6 @@ module.exports = configure(function (/* ctx */) {
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
       'pinia',
-      'service-container',
       'axios', // todo: Выпилить после настройки OpenApi
     ],
 
@@ -57,7 +57,7 @@ module.exports = configure(function (/* ctx */) {
         node: 'node16'
       },
 
-      vueRouterMode: 'history' // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -66,7 +66,9 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        API_HOST: require('dotenv').config().parsed.API_HOST,
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -76,9 +78,25 @@ module.exports = configure(function (/* ctx */) {
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
-      // vitePlugins: [
-      //   [ 'package-name', { ..options.. } ]
-      // ]
+      vitePlugins: [
+        /*[
+          'monaco-editor',
+          new MonacoEditorPlugin({
+          languages: [
+            'javascript',
+            'css',
+            'html',
+            'typescript',
+            'python',
+            'c++',
+            'c',
+            'c#',
+          ]
+        }),
+        ]*/
+        monacoEditorPlugin,
+        // [ 'package-name', { ..options.. } ]
+      ],
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
@@ -89,8 +107,6 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
-
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
 
@@ -102,7 +118,10 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Notify'],
+      config: {
+        // notify,
+      },
       cssAddon: true,
     },
 

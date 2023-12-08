@@ -1,0 +1,48 @@
+@import 'src/css/mixins/color.mixins';
+
+.page-container,
+.admin-page-container,
+.admin-tabs-page-container {
+  @include background-blur-opacity($main-bg, 0.1, 20);
+  border-radius: 20px;
+  height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap});
+  gap: 20px;
+  padding: 30px;
+}
+
+.admin-page-container {
+  height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap} * 2 - #{$activity-block-height});
+}
+
+.admin-tabs-page-container {
+  height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap} * 3 - #{$activity-block-height} - #{$tabs-height});
+}
+
+.page-activity-block {
+  height: $activity-block-height;
+  display: flex;
+  gap: 10px;
+}
+
+.page-content-container {
+  @include background-blur-opacity($main-bg, 0.1, 20);
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.page-class {
+  height: 100%;
+}
+
+.admin-page-class {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: $page-gap;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: $page-gap;
+}

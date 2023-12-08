@@ -1,27 +1,31 @@
 <template>
   <q-layout view="lHh lpR fFf" class="main-layout">
-    <q-header class="main-layout__header">
-      <con-header-logo class="cursor-pointer" @click="gotoMain" />
-      <user-data />
-      <!-- <q-btn
-                  dense
-                  flat
-                  icon="menu"
-                  size="20px"
-                  round
-                  @click="toggleDrawer"
-                /> -->
-      <!--      </div>-->
-    </q-header>
+    <template v-if="showPage">
+      <q-header class="main-layout__header">
+        <con-header-logo class="cursor-pointer" @click="gotoMain" />
+        <user-data />
+        <!-- <q-btn
+                    dense
+                    flat
+                    icon="menu"
+                    size="20px"
+                    round
+                    @click="toggleDrawer"
+                  /> -->
+      </q-header>
 
-    <!-- todo: настроить дравер как он должен выезжать (или сделать свой)
-    <q-drawer v-model="drawerOpen" side="right">
-       drawer content
-    </q-drawer> -->
+      <!-- todo: настроить дравер как он должен выезжать (или сделать свой)
+      <q-drawer v-model="drawerOpen" side="right">
+         drawer content
+      </q-drawer> -->
 
-    <q-page-container style="padding: 0" class="main-layout__page-container">
-      <router-view />
-    </q-page-container>
+      <q-page-container style="padding: 0" class="main-layout__page-container">
+        <router-view />
+      </q-page-container>
+    </template>
+    <template v-else>
+      <con-full-page-loading />
+    </template>
   </q-layout>
 </template>
 
@@ -30,11 +34,17 @@ import { defineComponent, ref } from 'vue';
 import ConHeaderLogo from 'components/ConHeaderLogo/ConHeaderLogo.vue';
 import { useRouter } from 'vue-router';
 import UserData from 'src/modules/users/components/UserData.vue';
+import ConFullPageLoading from 'components/ConFullPageLoading/ConFullPageLoading.vue';
+import { useUserData } from 'src/modules/core/composables/useUserData';
 
 
 export default defineComponent({
   name: 'MainLayout',
-  components: { UserData, ConHeaderLogo },
+  components: {
+    ConFullPageLoading,
+    UserData,
+    ConHeaderLogo,
+  },
 
   setup () {
     const router = useRouter();
@@ -56,6 +66,8 @@ export default defineComponent({
 
       toggleDrawer,
       gotoMain,
+
+      ...useUserData(),
     };
   },
 });
@@ -63,12 +75,9 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import 'src/css/app';
-$padding-x: 30px;
-$header-height: 84px;
-$page-gap: 20px;
 
 .main-layout {
-  background-color: $main;
+  background-color: $primary;
   background-image: url('assets/static/Logo.png');
   // todo: доработать для адаптивов
   background-size: 65vw;
@@ -79,24 +88,23 @@ $page-gap: 20px;
   align-items: center;
   gap: 20px;
   padding: 30px 0;
+  max-height: 100vh;
+  overflow: hidden;
 
   &__header {
     display: flex;
     position: unset;
-    //top: 20px;
-    //left: 50%;
-    //transform: translateX(-50%);
     width: 95vw;
     height: 84px;
     border-radius: 20px;
-    @include background-blur-opacity($secondary-bg, 0.1, 20);
+    @include background-blur-opacity($main-bg, 0.1, 20);
     justify-content: space-between;
     padding: 20px 30px;
   }
 
   &__page-container {
     width: 95vw;
-    //max-height: calc(100vh - 84px - 60px - 20px); // высота экрана - высота хидера - паддинги - расстояние между блоками
+    max-height: calc(100vh - #{$header-height} - #{$main-padding} * 2 - #{$page-gap});
     border-radius: 20px;
     min-height: unset;
   }
@@ -107,7 +115,5 @@ $page-gap: 20px;
     justify-content: center;
     align-items: center;
   }
-
-
 }
 </style>

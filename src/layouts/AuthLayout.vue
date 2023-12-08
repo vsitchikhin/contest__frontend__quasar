@@ -17,16 +17,20 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import 'src/css/app';
+
 .auth-layout {
-  background-color: $main;
+  background-color: $primary;
   background-image: url('assets/static/Logo.png');
   // todo: доработать для адаптивов
-  background-size: 65vw;
+  background-size: 60vw;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100vh;
+  max-height: 100vh;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-data">
+  <div class="user-data row">
     <q-item v-ripple clickable dense class="user-data__item">
       <q-item-section>
         <q-item-label> {{ userName }}</q-item-label>
@@ -16,18 +16,35 @@
         </q-avatar>
       </q-item-section>
     </q-item>
+    <q-btn flat class="bg-secondary" @click="logout">
+      Выйти
+      <q-icon name="logout" class="q-pl-sm" />
+    </q-btn>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
+import { UsersService } from 'src/modules/users/services/users.service';
+import { CHANGE_TOKEN_CUSTOM_EVENT } from 'src/types/general.consts';
+import { AuthService } from 'src/modules/core/services/auth/auth.service';
 export default defineComponent({
   setup() {
-    // todo: переписать под сервис
+    const usersService = new UsersService();
+    const authService = new AuthService();
+
     const userAvatar = computed(() => false);
-    const userName = computed(() => 'Иван Петров');
+    const userName = computed(() => `${usersService.currentUser?.last_name ?? ''} ${usersService.currentUser?.name}`);
+
+    async function logout() {
+      await authService.logoutUser();
+      window.dispatchEvent(new CustomEvent(CHANGE_TOKEN_CUSTOM_EVENT, { bubbles: true }));
+
+      window.location.reload();
+    }
 
     return {
+      logout,
       userAvatar,
       userName,
     };

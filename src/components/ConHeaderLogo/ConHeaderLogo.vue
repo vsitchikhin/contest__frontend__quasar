@@ -106,7 +106,7 @@ export default defineComponent({
 @import 'src/css/app';
 
 .con-header-logo {
-  color: $main-text;
+  color: $main-font;
   width: var(--width);
   display: flex;
   align-items: center;

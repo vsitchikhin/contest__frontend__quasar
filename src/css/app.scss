@@ -1,2 +1,8 @@
 @import 'mixins/color.mixins';
-@import 'variables/colors';
+@import 'quasar.variables';
+@import 'base.styles';
+
+*:not(.material-icons) {
+  font-family: 'Montserrat', sans-serif;
+}
+

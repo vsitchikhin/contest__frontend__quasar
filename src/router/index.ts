@@ -5,8 +5,10 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router';
-
+import { TokenService } from 'src/modules/core/services/tokens/token.service';
 import routes from './routes';
+import { UsersService } from 'src/modules/users/services/users.service';
+import { useCookie } from 'src/modules/core/utils/Cookie.utils';
 
 /*
  * If not building with SSR mode, you can
@@ -17,9 +19,8 @@ import routes from './routes';
  * with the Router instance.
  */
 
-const notRequiredAuthenticationRoutes = ['/auth/signing', '/auth/signup'];
+const notRequiredAuthenticationRoutes = ['/auth/signing', '/auth/signup', '/auth', '/auth/signing/', '/auth/signup/', '/auth/'];
 
-// todo: доделать перенаправление со "/" и при отсутствии авторизации
 export default route(function ( /* { store, ssrContext } */ ) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
@@ -46,12 +47,42 @@ export default route(function ( /* { store, ssrContext } */ ) {
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE),
   });
 
-  Router.beforeEach((to, from, next) => {
-    // const tokenService = new TokenService();
+  Router.beforeEach(async (to, from, next) => {
+    const tokenService = new TokenService();
+    const usersService = new UsersService();
 
-    // if (!notRequiredAuthenticationRoutes.includes(to.path) && !tokenService.accessToken) next({ name: 'Login' });
-    // else if (to.name === 'Login' && tokenService.accessToken) next(from);
-    // else next();
+    const isUserAuthenticated = !!tokenService.token || !!useCookie<string>('jwt').value;
+    const isMainOrAuthPath = notRequiredAuthenticationRoutes.includes(to.path) || to.path === '/';
+
+    if (!notRequiredAuthenticationRoutes.includes(to.path) && (!tokenService.token && !useCookie<string>('jwt').value)) {
+      next({ name: 'Signing' });
+    } else if (isMainOrAuthPath && isUserAuthenticated) {
+      let user = usersService.currentUser;
+
+      if (!tokenService.token) {
+        tokenService.setToken(useCookie<string>('jwt').value || null);
+      }
+
+      const token = useCookie<string>('jwt');
+
+      if (!user && !!tokenService.token && !!token.value) {
+        await usersService.loadCurrentUser();
+      }
+
+      user = usersService.currentUser;
+      console.log(user);
+
+      if (user?.permissions && user?.permissions?.includes('access_admin')) {
+        next({ name: 'AdminCourses' });
+      } else if (user?.permissions && user?.permissions.includes('access_student')) {
+        next({ name: 'Courses' });
+      } else {
+        // document.cookie
+        // next({ name: 'Auth' });
+        // todo: выкинуть ошибку
+      }
+    }
+    else next();
   });
 
   return Router;
